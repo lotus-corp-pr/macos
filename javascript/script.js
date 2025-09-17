@@ -357,26 +357,28 @@ function digi() {
   const date = new Date();
   let hour = date.getHours();
   let minute = checkTime(date.getMinutes());
+  let period = "AM"; // Default to AM
 
   function checkTime(i) {
     if (i < 10) {
       i = "0" + i;
+    } else {
+      i;
     }
     return i;
   }
-
-  if (hour > 12) {
-    hour = hour - 12;
-    if (hour === 12) {
-      hour = checkTime(hour);
-      elements.clockElement.innerHTML = hour + ":" + minute + " AM";
-    } else {
-      hour = checkTime(hour);
-      elements.clockElement.innerHTML = hour + ":" + minute + " PM";
+  
+  if (hour === 0) {
+    hour = 12; // Midnight
+  } else if (hour >= 12) {
+    period = "PM"; // Switch to PM
+    if (hour > 12) {
+      hour -= 12; // Convert to 12-hour format
     }
-  } else {
-    elements.clockElement.innerHTML = hour + ":" + minute + " AM";
   }
+
+  hour = checkTime(hour);
+  elements.clockElement.innerHTML = hour + ":" + minute + " " + period;
 }
 
 let terminal_line_html = document.querySelector(".terminal_line").outerHTML;
