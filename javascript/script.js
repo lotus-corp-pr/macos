@@ -227,6 +227,10 @@ terminalApp.full.addEventListener("click", () =>
 notesApp.full.addEventListener("click", () =>
   handleFullScreen(notesApp.window)
 );
+/* Added the function to handle the full screen buttons for the calculator app; */
+calculatorAppApp.full.addEventListener("click", () =>
+  handleFullScreen(calculatorAppApp.window)
+);
 /*
 vscodeApp.full.addEventListener("click", () =>
   handleFullScreen(vscodeApp.window)
