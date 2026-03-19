@@ -83,6 +83,17 @@ const mapsApp = {
   opening: document.querySelector(".open-map"),
 };
 
+// Calendar App
+const calendarAppWindow = {
+  app_name: document.querySelector("#calendar-app-name"),
+  window: document.querySelector(".calendar-app"),
+  full: document.querySelector(".full-calendar"),
+  close: document.querySelector(".close-calendar"),
+  backfull: document.querySelector(".backfull-calendar"),
+  point: document.querySelector("#point-calendar"),
+  opening: document.querySelector(".open-calendar"),
+};
+
 // Launchpad
 const launchpad = {
   container: document.querySelector(".container__Window"),
@@ -272,9 +283,23 @@ calculatorApp.close.addEventListener("click", () =>
 calculatorApp.opening_l.addEventListener("click", handleOpenCal_lunchpad);
 elements.open_spotlight.addEventListener("click", handleopen_spotlight);
 launchpad.searchbox.addEventListener("input", handleLaunchpadSearch);
-elements.clockWrapper.addEventListener("click", () => {
-  elements.widgetsPanel.classList.toggle("open");
-});
+
+// Calendar App Event Listeners
+calendarAppWindow.opening.addEventListener("click", () =>
+  open_window(calendarAppWindow.window, calendarAppWindow.point, calendarAppWindow.app_name)
+);
+
+calendarAppWindow.close.addEventListener("click", () =>
+  close_window(calendarAppWindow.window, calendarAppWindow.point, calendarAppWindow.app_name)
+);
+
+calendarAppWindow.full.addEventListener("click", () =>
+  handleFullScreen(calendarAppWindow.window)
+);
+
+calendarAppWindow.backfull.addEventListener("click", () =>
+  handleMinimize(calendarAppWindow.window)
+);
 
 // Calculator code
 // select all the buttons
