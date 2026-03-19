@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- ios support -->
@@ -172,6 +173,12 @@
               d="M10,18c1.846,0,3.543-0.635,4.897-1.688l4.396,4.396l1.414-1.414l-4.396-4.396C17.365,13.543,18,11.846,18,10 c0-4.411-3.589-8-8-8s-8,3.589-8,8S5.589,18,10,18z M10,4c3.309,0,6,2.691,6,6s-2.691,6-6,6s-6-2.691-6-6S6.691,4,10,4z"
             ></path>
           </svg>
+        </li>
+        <li class="open_notification">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
+            <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>
+          </svg>
+          <span class="notification-badge hidden">0</span>
         </li>
         <li class="open_control hidden">
           <img
@@ -372,6 +379,10 @@
       <button class="icon">
         <img src="./icon/dock/mail.png" alt="Mail Logo" class="hidden" />
       </button>
+      <button class="icon open-calendar-dock">
+        <img src="./icon/dock/calendar.png" alt="Calendar Logo" />
+        <hr class="point hidden" id="point-calendar" />
+      </button>
       <button class="icon">
         <img src="./icon/dock/photos.png" alt="Photos Logo" class="hidden" />
       </button>
@@ -442,7 +453,7 @@
           <img src="./icon/Launchpad/calculator.png" alt="" />
           <strong>Calculator</strong>
         </div>
-        <div class="child-launchpad" data-keywords="Calendar">
+        <div class="child-launchpad open-calendar-app" data-keywords="Calendar">
           <img src="./icon/Launchpad/calendar.png" alt="" />
           <strong>Calendar</strong>
         </div>
@@ -662,30 +673,192 @@
       </div>
     </div>
 
-    <!-- Widgets panel -->
-    <section class="widgets-panel">
-      <div class="widgets-panel__calendar">
-        <div id="taghvim">
-          <h2>19</h2>
-          <h4>Tuesday</h4>
+    <!-- Notification Center -->
+    <section class="notification-center" id="notificationCenter">
+      <div class="notification-center__header">
+        <h3>Notification Center</h3>
+        <div class="notification-center__controls">
+          <button class="clear-all-btn" id="clearAllNotifications">清除全部</button>
+          <button class="dnd-toggle" id="dndToggle">
+            <span class="material-icons">do_not_disturb_on</span>
+            <span class="dnd-text">勿扰模式</span>
+          </button>
         </div>
-        <ul>
-          <li class="blue">
-            <span>Listen podcast</span>
-            <span>2:30 - 3:00 PM</span>
-          </li>
-          <li class="purple">
-            <span>English class</span>
-            <span>4:00 - 4:45 PM</span>
-          </li>
-          <li class="green">
-            <span>Stand-up meeting</span>
-            <span>6:15 - 5:30 PM</span>
-          </li>
-        </ul>
+      </div>
+      
+      <!-- Widgets Grid -->
+      <div class="widgets-grid">
+        <!-- Clock Widget -->
+        <div class="widget widget--clock">
+          <div class="widget__content">
+            <div class="clock-widget__time" id="widgetClock">12:00</div>
+            <div class="clock-widget__date" id="widgetDate">1月1日 星期一</div>
+          </div>
+        </div>
+        
+        <!-- Weather Widget -->
+        <div class="widget widget--weather">
+          <div class="widget__header">
+            <span class="material-icons">location_on</span>
+            <span>北京</span>
+          </div>
+          <div class="widget__content">
+            <div class="weather-widget__temp">22°</div>
+            <div class="weather-widget__icon">
+              <span class="material-icons">wb_sunny</span>
+            </div>
+            <div class="weather-widget__desc">晴朗</div>
+          </div>
+        </div>
+        
+        <!-- Calendar Widget -->
+        <div class="widget widget--calendar">
+          <div class="widget__header">
+            <span class="material-icons">calendar_today</span>
+            <span>日历</span>
+          </div>
+          <div class="widget__content" id="calendarWidget">
+            <div class="calendar-widget__month" id="widgetMonth">1月</div>
+            <div class="calendar-widget__days" id="widgetCalendarDays"></div>
+          </div>
+        </div>
+        
+        <!-- Stocks Widget -->
+        <div class="widget widget--stocks">
+          <div class="widget__header">
+            <span class="material-icons">trending_up</span>
+            <span>股票</span>
+          </div>
+          <div class="widget__content">
+            <div class="stock-item">
+              <span class="stock-name">AAPL</span>
+              <span class="stock-price up">$178.52</span>
+              <span class="stock-change">+1.2%</span>
+            </div>
+            <div class="stock-item">
+              <span class="stock-name">GOOGL</span>
+              <span class="stock-price down">$142.18</span>
+              <span class="stock-change">-0.8%</span>
+            </div>
+            <div class="stock-item">
+              <span class="stock-name">TSLA</span>
+              <span class="stock-price up">$245.67</span>
+              <span class="stock-change">+2.1%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Notifications List -->
+      <div class="notifications-list" id="notificationsList">
+        <div class="notification-group">
+          <div class="notification-group__header">
+            <span>今天</span>
+            <span class="notification-count">3</span>
+          </div>
+          <div class="notification-items" id="todayNotifications">
+            <!-- Notifications will be dynamically added here -->
+          </div>
+        </div>
       </div>
     </section>
-    <!-- Widgets panel -->
+    <!-- Notification Center -->
+
+    <!-- Calendar App Window -->
+    <div class="window calendar-app" id="calendarApp">
+      <div class="window__taskbar">
+        <div class="window__taskbar--actions">
+          <button class="close-calendar"></button>
+          <button class="backfull-calendar"></button>
+          <button class="full-calendar"></button>
+        </div>
+        <div class="window__taskbar--content">
+          <h2>日历</h2>
+        </div>
+        <div class="calendar-toolbar">
+          <button class="view-btn active" data-view="month">月</button>
+          <button class="view-btn" data-view="week">周</button>
+          <button class="view-btn" data-view="day">日</button>
+          <button class="today-btn" id="goToToday">今天</button>
+          <button class="add-event-btn" id="addEventBtn">
+            <span class="material-icons">add</span>
+          </button>
+        </div>
+      </div>
+      <div class="calendar-content">
+        <div class="calendar-header">
+          <button class="nav-btn prev" id="prevMonth">
+            <span class="material-icons">chevron_left</span>
+          </button>
+          <h3 class="calendar-title" id="calendarTitle">2024年1月</h3>
+          <button class="nav-btn next" id="nextMonth">
+            <span class="material-icons">chevron_right</span>
+          </button>
+        </div>
+        <div class="calendar-view" id="calendarView">
+          <!-- Calendar content will be dynamically generated -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Event Modal -->
+    <div class="event-modal" id="eventModal">
+      <div class="event-modal__content">
+        <div class="event-modal__header">
+          <h3>新建事件</h3>
+          <button class="close-modal" id="closeEventModal">
+            <span class="material-icons">close</span>
+          </button>
+        </div>
+        <form class="event-form" id="eventForm">
+          <div class="form-group">
+            <input type="text" id="eventTitle" placeholder="标题" required>
+          </div>
+          <div class="form-group">
+            <label>日期</label>
+            <input type="date" id="eventDate" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>开始时间</label>
+              <input type="time" id="eventStartTime" required>
+            </div>
+            <div class="form-group">
+              <label>结束时间</label>
+              <input type="time" id="eventEndTime" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>提醒</label>
+            <select id="eventReminder">
+              <option value="none">无</option>
+              <option value="5">5分钟前</option>
+              <option value="15">15分钟前</option>
+              <option value="30">30分钟前</option>
+              <option value="60">1小时前</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>标签颜色</label>
+            <div class="color-picker">
+              <button type="button" class="color-option active" data-color="blue" style="background: #007aff;"></button>
+              <button type="button" class="color-option" data-color="green" style="background: #34c759;"></button>
+              <button type="button" class="color-option" data-color="red" style="background: #ff3b30;"></button>
+              <button type="button" class="color-option" data-color="orange" style="background: #ff9500;"></button>
+              <button type="button" class="color-option" data-color="purple" style="background: #af52de;"></button>
+              <button type="button" class="color-option" data-color="pink" style="background: #ff2d55;"></button>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" id="cancelEvent">取消</button>
+            <button type="submit" class="btn-primary">保存</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Notification Banner Container -->
+    <div class="notification-banners" id="notificationBanners"></div>
   </div>
     <div class="spotlight_serach">
       <svg width="24" height="24">

@@ -16,6 +16,9 @@ const elements = {
   batteryProgress: document.querySelector(".battery__progress"),
   batteryIsChargingLogo: document.querySelector(".is-charging"),
   powerSource: document.querySelector(".power-source"),
+  notificationCenter: document.getElementById("notificationCenter"),
+  notificationBadge: document.querySelector(".notification-badge"),
+  openNotification: document.querySelector(".open_notification"),
 };
 
 // Calculator App
@@ -81,6 +84,18 @@ const mapsApp = {
   backfull: document.querySelector(".backfull-map"),
   point: document.querySelector("#point-maps"),
   opening: document.querySelector(".open-map"),
+};
+
+// Calendar App
+const calendarApp = {
+  app_name: document.querySelector("#Calendar"),
+  window: document.getElementById("calendarApp"),
+  full: document.querySelector(".full-calendar"),
+  close: document.querySelector(".close-calendar"),
+  backfull: document.querySelector(".backfull-calendar"),
+  point: document.getElementById("point-calendar"),
+  opening_dock: document.querySelector(".open-calendar-dock"),
+  opening_launchpad: document.querySelector(".open-calendar-app"),
 };
 
 // Launchpad
@@ -346,6 +361,7 @@ $(function () {
   $(".Vscode").draggable();
   $(".spotlight_serach").draggable();
   $(".maps").draggable();
+  $(".calendar-app").draggable();
 });
 
 // Date and time
@@ -506,6 +522,510 @@ elements.batteryButton.addEventListener("click", () => {
 });
 /********** End Battery **********/
 
+/********** Notification Center **********/
+let notifications = [];
+let dndMode = false;
+
+function toggleNotificationCenter() {
+  elements.notificationCenter.classList.toggle("open");
+}
+
+function updateNotificationBadge() {
+  const unreadCount = notifications.filter(n => !n.read).length;
+  if (unreadCount > 0) {
+    elements.notificationBadge.textContent = unreadCount;
+    elements.notificationBadge.classList.remove("hidden");
+  } else {
+    elements.notificationBadge.classList.add("hidden");
+  }
+}
+
+function addNotification(notification) {
+  if (dndMode) return;
+  
+  notification.id = Date.now();
+  notification.time = new Date();
+  notifications.unshift(notification);
+  
+  renderNotifications();
+  updateNotificationBadge();
+  showNotificationBanner(notification);
+}
+
+function showNotificationBanner(notification) {
+  if (dndMode) return;
+  
+  const banner = document.createElement("div");
+  banner.className = "notification-banner";
+  banner.innerHTML = `
+    <div class="notification-banner__header">
+      <div class="notification-banner__icon" style="background: ${notification.iconBg || '#007aff'}">
+        ${notification.icon || '🔔'}
+      </div>
+      <span class="notification-banner__app">${notification.app}</span>
+      <span class="notification-banner__time">刚刚</span>
+    </div>
+    <div class="notification-banner__title">${notification.title}</div>
+    <div class="notification-banner__message">${notification.message}</div>
+  `;
+  
+  document.getElementById("notificationBanners").appendChild(banner);
+  
+  setTimeout(() => {
+    banner.classList.add("removing");
+    setTimeout(() => banner.remove(), 300);
+  }, 5000);
+}
+
+function renderNotifications() {
+  const container = document.getElementById("todayNotifications");
+  container.innerHTML = "";
+  
+  const todayNotifications = notifications.filter(n => {
+    const notifDate = new Date(n.time);
+    const today = new Date();
+    return notifDate.toDateString() === today.toDateString();
+  });
+  
+  document.querySelector(".notification-count").textContent = todayNotifications.length;
+  
+  todayNotifications.forEach(notification => {
+    const item = document.createElement("div");
+    item.className = "notification-item";
+    item.innerHTML = `
+      <div class="notification-item__header">
+        <div class="notification-item__icon" style="background: ${notification.iconBg || '#007aff'}">
+          ${notification.icon || '🔔'}
+        </div>
+        <span class="notification-item__app">${notification.app}</span>
+        <span class="notification-item__time">${formatTime(notification.time)}</span>
+      </div>
+      <div class="notification-item__title">${notification.title}</div>
+      <div class="notification-item__message">${notification.message}</div>
+    `;
+    container.appendChild(item);
+  });
+}
+
+function formatTime(date) {
+  const now = new Date();
+  const diff = Math.floor((now - new Date(date)) / 1000);
+  
+  if (diff < 60) return "刚刚";
+  if (diff < 3600) return `${Math.floor(diff / 60)}分钟前`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)}小时前`;
+  return new Date(date).toLocaleDateString();
+}
+
+function clearAllNotifications() {
+  notifications = [];
+  renderNotifications();
+  updateNotificationBadge();
+}
+
+function toggleDND() {
+  dndMode = !dndMode;
+  const btn = document.getElementById("dndToggle");
+  btn.classList.toggle("active", dndMode);
+  
+  if (dndMode) {
+    showNotificationBanner({
+      app: "系统",
+      title: "勿扰模式已开启",
+      message: "通知将不会显示",
+      icon: "🌙",
+      iconBg: "#ff9500"
+    });
+  }
+}
+
+// Widget Clock
+function updateWidgetClock() {
+  const now = new Date();
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  document.getElementById("widgetClock").textContent = `${hours}:${minutes}`;
+  
+  const days = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+  const months = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"];
+  document.getElementById("widgetDate").textContent = `${months[now.getMonth()]}${now.getDate()}日 ${days[now.getDay()]}`;
+}
+
+// Calendar Widget
+function updateCalendarWidget() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  
+  document.getElementById("widgetMonth").textContent = `${month + 1}月`;
+  
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  
+  const container = document.getElementById("widgetCalendarDays");
+  container.innerHTML = "";
+  
+  const dayNames = ["日", "一", "二", "三", "四", "五", "六"];
+  dayNames.forEach(day => {
+    const dayEl = document.createElement("div");
+    dayEl.className = "calendar-widget__day";
+    dayEl.style.color = "rgba(255,255,255,0.5)";
+    dayEl.textContent = day;
+    container.appendChild(dayEl);
+  });
+  
+  for (let i = 0; i < firstDay; i++) {
+    container.appendChild(document.createElement("div"));
+  }
+  
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dayEl = document.createElement("div");
+    dayEl.className = "calendar-widget__day";
+    dayEl.textContent = day;
+    if (day === now.getDate()) {
+      dayEl.classList.add("today");
+    }
+    container.appendChild(dayEl);
+  }
+}
+
+/********** Calendar App **********/
+let calendarEvents = JSON.parse(localStorage.getItem("calendarEvents") || "[]");
+let currentCalendarDate = new Date();
+let currentCalendarView = "month";
+let selectedEventColor = "blue";
+
+function initCalendar() {
+  renderCalendar();
+  setupCalendarEventListeners();
+  loadCalendarEvents();
+}
+
+function renderCalendar() {
+  const view = document.getElementById("calendarView");
+  view.innerHTML = "";
+  
+  if (currentCalendarView === "month") {
+    renderMonthView();
+  } else if (currentCalendarView === "week") {
+    renderWeekView();
+  } else if (currentCalendarView === "day") {
+    renderDayView();
+  }
+  
+  updateCalendarTitle();
+}
+
+function renderMonthView() {
+  const year = currentCalendarDate.getFullYear();
+  const month = currentCalendarDate.getMonth();
+  
+  const view = document.getElementById("calendarView");
+  view.className = "calendar-view month-view";
+  
+  const dayNames = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+  dayNames.forEach(day => {
+    const header = document.createElement("div");
+    header.className = "day-header";
+    header.textContent = day;
+    view.appendChild(header);
+  });
+  
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const daysInPrevMonth = new Date(year, month, 0).getDate();
+  
+  for (let i = firstDay - 1; i >= 0; i--) {
+    const cell = createDayCell(daysInPrevMonth - i, true, year, month - 1);
+    view.appendChild(cell);
+  }
+  
+  for (let day = 1; day <= daysInMonth; day++) {
+    const cell = createDayCell(day, false, year, month);
+    view.appendChild(cell);
+  }
+  
+  const remainingCells = 42 - (firstDay + daysInMonth);
+  for (let day = 1; day <= remainingCells; day++) {
+    const cell = createDayCell(day, true, year, month + 1);
+    view.appendChild(cell);
+  }
+}
+
+function createDayCell(day, isOtherMonth, year, month) {
+  const cell = document.createElement("div");
+  cell.className = "day-cell";
+  if (isOtherMonth) cell.classList.add("other-month");
+  
+  const actualYear = month < 0 ? year - 1 : month > 11 ? year + 1 : year;
+  const actualMonth = month < 0 ? 11 : month > 11 ? 0 : month;
+  
+  const today = new Date();
+  if (!isOtherMonth && day === today.getDate() && actualMonth === today.getMonth() && actualYear === today.getFullYear()) {
+    cell.classList.add("today");
+  }
+  
+  const dayNum = document.createElement("div");
+  dayNum.className = "day-number";
+  dayNum.textContent = day;
+  cell.appendChild(dayNum);
+  
+  const eventsContainer = document.createElement("div");
+  eventsContainer.className = "day-events";
+  
+  const dateStr = `${actualYear}-${String(actualMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+  const dayEvents = calendarEvents.filter(e => e.date === dateStr);
+  
+  dayEvents.forEach(event => {
+    const eventEl = document.createElement("div");
+    eventEl.className = `day-event ${event.color}`;
+    eventEl.textContent = `${event.startTime} ${event.title}`;
+    eventsContainer.appendChild(eventEl);
+  });
+  
+  cell.appendChild(eventsContainer);
+  
+  cell.addEventListener("click", () => openEventModal(dateStr));
+  
+  return cell;
+}
+
+function renderWeekView() {
+  const view = document.getElementById("calendarView");
+  view.className = "calendar-view week-view";
+  
+  view.appendChild(document.createElement("div"));
+  
+  const startOfWeek = new Date(currentCalendarDate);
+  startOfWeek.setDate(currentCalendarDate.getDate() - currentCalendarDate.getDay());
+  
+  for (let i = 0; i < 7; i++) {
+    const day = new Date(startOfWeek);
+    day.setDate(startOfWeek.getDate() + i);
+    
+    const header = document.createElement("div");
+    header.className = "week-day-header";
+    if (day.toDateString() === new Date().toDateString()) {
+      header.classList.add("today");
+    }
+    header.textContent = `${["周日", "周一", "周二", "周三", "周四", "周五", "周六"][i]} ${day.getDate()}`;
+    view.appendChild(header);
+  }
+  
+  for (let hour = 0; hour < 24; hour++) {
+    const timeSlot = document.createElement("div");
+    timeSlot.className = "time-slot";
+    timeSlot.textContent = `${hour}:00`;
+    view.appendChild(timeSlot);
+    
+    for (let i = 0; i < 7; i++) {
+      const cell = document.createElement("div");
+      cell.className = "week-cell";
+      view.appendChild(cell);
+    }
+  }
+}
+
+function renderDayView() {
+  const view = document.getElementById("calendarView");
+  view.className = "calendar-view day-view";
+  
+  for (let hour = 0; hour < 24; hour++) {
+    const timeSlot = document.createElement("div");
+    timeSlot.className = "time-slot";
+    timeSlot.textContent = `${hour}:00`;
+    view.appendChild(timeSlot);
+    
+    const cell = document.createElement("div");
+    cell.className = "day-cell";
+    view.appendChild(cell);
+  }
+}
+
+function updateCalendarTitle() {
+  const year = currentCalendarDate.getFullYear();
+  const month = currentCalendarDate.getMonth();
+  
+  if (currentCalendarView === "month") {
+    document.getElementById("calendarTitle").textContent = `${year}年${month + 1}月`;
+  } else if (currentCalendarView === "week") {
+    document.getElementById("calendarTitle").textContent = `${year}年 第${getWeekNumber(currentCalendarDate)}周`;
+  } else {
+    document.getElementById("calendarTitle").textContent = `${year}年${month + 1}月${currentCalendarDate.getDate()}日`;
+  }
+}
+
+function getWeekNumber(date) {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+}
+
+function setupCalendarEventListeners() {
+  document.querySelectorAll(".view-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".view-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      currentCalendarView = btn.dataset.view;
+      renderCalendar();
+    });
+  });
+  
+  document.getElementById("prevMonth").addEventListener("click", () => {
+    if (currentCalendarView === "month") {
+      currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
+    } else if (currentCalendarView === "week") {
+      currentCalendarDate.setDate(currentCalendarDate.getDate() - 7);
+    } else {
+      currentCalendarDate.setDate(currentCalendarDate.getDate() - 1);
+    }
+    renderCalendar();
+  });
+  
+  document.getElementById("nextMonth").addEventListener("click", () => {
+    if (currentCalendarView === "month") {
+      currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
+    } else if (currentCalendarView === "week") {
+      currentCalendarDate.setDate(currentCalendarDate.getDate() + 7);
+    } else {
+      currentCalendarDate.setDate(currentCalendarDate.getDate() + 1);
+    }
+    renderCalendar();
+  });
+  
+  document.getElementById("goToToday").addEventListener("click", () => {
+    currentCalendarDate = new Date();
+    renderCalendar();
+  });
+  
+  document.getElementById("addEventBtn").addEventListener("click", () => {
+    const today = new Date();
+    const dateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+    openEventModal(dateStr);
+  });
+  
+  document.querySelectorAll(".color-option").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".color-option").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      selectedEventColor = btn.dataset.color;
+    });
+  });
+  
+  document.getElementById("eventForm").addEventListener("submit", saveEvent);
+  document.getElementById("cancelEvent").addEventListener("click", closeEventModal);
+  document.getElementById("closeEventModal").addEventListener("click", closeEventModal);
+  
+  calendarApp.close.addEventListener("click", () => close_window(calendarApp.window, calendarApp.point, calendarApp.app_name));
+  calendarApp.backfull.addEventListener("click", () => handleMinimize(calendarApp.window));
+  calendarApp.full.addEventListener("click", () => handleFullScreen(calendarApp.window));
+  
+  if (calendarApp.opening_dock) {
+    calendarApp.opening_dock.addEventListener("click", () => open_window(calendarApp.window, calendarApp.point, calendarApp.app_name));
+  }
+  if (calendarApp.opening_launchpad) {
+    calendarApp.opening_launchpad.addEventListener("click", () => {
+      open_window(calendarApp.window, calendarApp.point, calendarApp.app_name);
+      launchpad.window.style.display = "none";
+      launchpad.point.style.display = "none";
+    });
+  }
+}
+
+function openEventModal(dateStr) {
+  document.getElementById("eventModal").classList.add("open");
+  document.getElementById("eventDate").value = dateStr;
+  document.getElementById("eventStartTime").value = "09:00";
+  document.getElementById("eventEndTime").value = "10:00";
+}
+
+function closeEventModal() {
+  document.getElementById("eventModal").classList.remove("open");
+  document.getElementById("eventForm").reset();
+}
+
+function saveEvent(e) {
+  e.preventDefault();
+  
+  const event = {
+    id: Date.now(),
+    title: document.getElementById("eventTitle").value,
+    date: document.getElementById("eventDate").value,
+    startTime: document.getElementById("eventStartTime").value,
+    endTime: document.getElementById("eventEndTime").value,
+    reminder: document.getElementById("eventReminder").value,
+    color: selectedEventColor
+  };
+  
+  calendarEvents.push(event);
+  localStorage.setItem("calendarEvents", JSON.stringify(calendarEvents));
+  
+  renderCalendar();
+  closeEventModal();
+  
+  addNotification({
+    app: "日历",
+    title: "事件已创建",
+    message: `"${event.title}" 已添加到日历`,
+    icon: "📅",
+    iconBg: "#007aff"
+  });
+}
+
+function loadCalendarEvents() {
+  calendarEvents = JSON.parse(localStorage.getItem("calendarEvents") || "[]");
+  renderCalendar();
+}
+
+/********** End Calendar App **********/
+
 // Call the functions
 calculateBattery();
 digi();
+updateWidgetClock();
+updateCalendarWidget();
+initCalendar();
+
+// Update clocks every minute
+setInterval(() => {
+  digi();
+  updateWidgetClock();
+}, 60000);
+
+// Event Listeners
+elements.openNotification.addEventListener("click", toggleNotificationCenter);
+document.getElementById("clearAllNotifications").addEventListener("click", clearAllNotifications);
+document.getElementById("dndToggle").addEventListener("click", toggleDND);
+
+// Sample notifications
+setTimeout(() => {
+  addNotification({
+    app: "信息",
+    title: "新消息",
+    message: "你好！今天过得怎么样？",
+    icon: "💬",
+    iconBg: "#34c759"
+  });
+}, 2000);
+
+setTimeout(() => {
+  addNotification({
+    app: "邮件",
+    title: "新邮件",
+    message: "来自张三的邮件：项目更新",
+    icon: "✉️",
+    iconBg: "#007aff"
+  });
+}, 4000);
+
+setTimeout(() => {
+  addNotification({
+    app: "日历",
+    title: "即将到来的事件",
+    message: "15分钟后：团队会议",
+    icon: "📅",
+    iconBg: "#ff9500"
+  });
+}, 6000);
