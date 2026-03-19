@@ -173,6 +173,12 @@
             ></path>
           </svg>
         </li>
+        <li class="open-notification-center" id="openNotificationCenter">
+          <svg width="20" height="20" viewBox="0 0 24 24">
+            <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>
+          </svg>
+          <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
+        </li>
         <li class="open_control hidden">
           <img
             src="./icon/control_center.gif"
@@ -660,7 +666,182 @@
           <button value="=" class="button operator r-radius">=</button>
         </div>
       </div>
-    </div>
+
+      <!-- Calendar App -->
+      <div class="window calendar-app" id="calendarApp">
+        <div class="window__taskbar">
+          <div class="window__taskbar--actions">
+            <button class="close-calendar-app"></button>
+            <button class="backfull-calendar-app"></button>
+            <button class="full-calendar-app"></button>
+          </div>
+          <div class="window__taskbar--content">
+            <h2>Calendar</h2>
+          </div>
+          <div class="window__taskbar--right">
+            <div class="calendar-view-toggles">
+              <button class="view-toggle active" data-view="month">Month</button>
+              <button class="view-toggle" data-view="week">Week</button>
+              <button class="view-toggle" data-view="day">Day</button>
+            </div>
+            <button class="add-event-btn" id="addEventBtn">
+              <span class="material-icons">add</span>
+            </button>
+          </div>
+        </div>
+        <div class="calendar-app__content">
+          <div class="calendar-sidebar">
+            <div class="calendar-mini">
+              <div class="calendar-mini__header">
+                <button class="mini-nav prev" id="miniPrev">
+                  <span class="material-icons">chevron_left</span>
+                </button>
+                <span class="mini-month" id="miniMonth">March 2026</span>
+                <button class="mini-nav next" id="miniNext">
+                  <span class="material-icons">chevron_right</span>
+                </button>
+              </div>
+              <div class="calendar-mini__grid" id="miniCalendarGrid"></div>
+            </div>
+            <div class="calendar-colors">
+              <h4>Calendars</h4>
+              <label class="color-filter">
+                <input type="checkbox" checked data-color="red">
+                <span class="color-dot red"></span>
+                <span>Work</span>
+              </label>
+              <label class="color-filter">
+                <input type="checkbox" checked data-color="blue">
+                <span class="color-dot blue"></span>
+                <span>Personal</span>
+              </label>
+              <label class="color-filter">
+                <input type="checkbox" checked data-color="green">
+                <span class="color-dot green"></span>
+                <span>Family</span>
+              </label>
+              <label class="color-filter">
+                <input type="checkbox" checked data-color="purple">
+                <span class="color-dot purple"></span>
+                <span>Important</span>
+              </label>
+              <label class="color-filter">
+                <input type="checkbox" checked data-color="orange">
+                <span class="color-dot orange"></span>
+                <span>Other</span>
+              </label>
+            </div>
+          </div>
+          <div class="calendar-main">
+            <div class="calendar-main__header">
+              <button class="today-btn" id="todayBtn">Today</button>
+              <div class="calendar-nav">
+                <button class="nav-btn prev" id="calPrev">
+                  <span class="material-icons">chevron_left</span>
+                </button>
+                <button class="nav-btn next" id="calNext">
+                  <span class="material-icons">chevron_right</span>
+                </button>
+              </div>
+              <h2 class="calendar-title" id="calendarTitle">March 2026</h2>
+            </div>
+            <div class="calendar-views">
+              <div class="calendar-view month-view active" id="monthView">
+                <div class="month-view__weekdays">
+                  <span>Sun</span>
+                  <span>Mon</span>
+                  <span>Tue</span>
+                  <span>Wed</span>
+                  <span>Thu</span>
+                  <span>Fri</span>
+                  <span>Sat</span>
+                </div>
+                <div class="month-view__days" id="monthViewDays"></div>
+              </div>
+              <div class="calendar-view week-view" id="weekView">
+                <div class="week-view__header" id="weekViewHeader"></div>
+                <div class="week-view__all-day" id="weekViewAllDay"></div>
+                <div class="week-view__grid" id="weekViewGrid"></div>
+              </div>
+              <div class="calendar-view day-view" id="dayView">
+                <div class="day-view__header" id="dayViewHeader"></div>
+                <div class="day-view__all-day" id="dayViewAllDay"></div>
+                <div class="day-view__grid" id="dayViewGrid"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="event-modal" id="eventModal">
+        <div class="event-modal__content">
+          <div class="event-modal__header">
+            <h3>New Event</h3>
+            <button class="close-modal" id="closeEventModal">
+              <span class="material-icons">close</span>
+            </button>
+          </div>
+          <form class="event-form" id="eventForm">
+            <div class="form-group">
+              <input type="text" id="eventTitle" placeholder="Event Title" required>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Start</label>
+                <input type="datetime-local" id="eventStart" required>
+              </div>
+              <div class="form-group">
+                <label>End</label>
+                <input type="datetime-local" id="eventEnd" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Color</label>
+              <div class="color-picker">
+                <label class="color-option">
+                  <input type="radio" name="eventColor" value="red" checked>
+                  <span class="color-dot red"></span>
+                </label>
+                <label class="color-option">
+                  <input type="radio" name="eventColor" value="blue">
+                  <span class="color-dot blue"></span>
+                </label>
+                <label class="color-option">
+                  <input type="radio" name="eventColor" value="green">
+                  <span class="color-dot green"></span>
+                </label>
+                <label class="color-option">
+                  <input type="radio" name="eventColor" value="purple">
+                  <span class="color-dot purple"></span>
+                </label>
+                <label class="color-option">
+                  <input type="radio" name="eventColor" value="orange">
+                  <span class="color-dot orange"></span>
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Reminder</label>
+              <select id="eventReminder">
+                <option value="none">None</option>
+                <option value="5">5 minutes before</option>
+                <option value="15">15 minutes before</option>
+                <option value="30">30 minutes before</option>
+                <option value="60">1 hour before</option>
+                <option value="1440">1 day before</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Notes</label>
+              <textarea id="eventNotes" rows="3" placeholder="Add notes..."></textarea>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn-cancel" id="cancelEvent">Cancel</button>
+              <button type="submit" class="btn-save">Save Event</button>
+            </div>
+          </form>
+        </div>
+      </div>
 
     <!-- Widgets panel -->
     <section class="widgets-panel">
@@ -686,6 +867,161 @@
       </div>
     </section>
     <!-- Widgets panel -->
+
+    <!-- Notification Center -->
+    <div class="notification-center" id="notificationCenter">
+      <div class="notification-center__header">
+        <h2>Notification Center</h2>
+        <div class="dnd-toggle">
+          <span class="dnd-label">Do Not Disturb</span>
+          <label class="dnd-switch">
+            <input type="checkbox" id="dndToggle">
+            <span class="dnd-slider"></span>
+          </label>
+        </div>
+      </div>
+      
+      <div class="notification-center__widgets">
+        <div class="widget weather-widget">
+          <div class="widget__header">
+            <span class="material-icons">wb_sunny</span>
+            <span class="weather-location">San Francisco</span>
+          </div>
+          <div class="weather-widget__content">
+            <div class="weather-temp">
+              <span class="temp-value">72</span>
+              <span class="temp-unit">°F</span>
+            </div>
+            <div class="weather-details">
+              <span class="weather-condition">Sunny</span>
+              <span class="weather-high-low">H:78° L:62°</span>
+            </div>
+          </div>
+          <div class="weather-forecast">
+            <div class="forecast-item">
+              <span>Mon</span>
+              <span class="material-icons">wb_sunny</span>
+              <span>75°</span>
+            </div>
+            <div class="forecast-item">
+              <span>Tue</span>
+              <span class="material-icons">cloud</span>
+              <span>68°</span>
+            </div>
+            <div class="forecast-item">
+              <span>Wed</span>
+              <span class="material-icons">water_drop</span>
+              <span>65°</span>
+            </div>
+            <div class="forecast-item">
+              <span>Thu</span>
+              <span class="material-icons">wb_sunny</span>
+              <span>70°</span>
+            </div>
+            <div class="forecast-item">
+              <span>Fri</span>
+              <span class="material-icons">wb_sunny</span>
+              <span>73°</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="widget calendar-widget">
+          <div class="widget__header">
+            <span class="material-icons">calendar_today</span>
+            <span class="calendar-widget__month" id="widgetMonth">March 2026</span>
+          </div>
+          <div class="calendar-widget__grid" id="widgetCalendarGrid">
+          </div>
+          <div class="calendar-widget__events" id="widgetEvents">
+            <div class="widget-event">
+              <div class="event-dot event-dot--red"></div>
+              <span>Team Meeting - 10:00 AM</span>
+            </div>
+            <div class="widget-event">
+              <div class="event-dot event-dot--blue"></div>
+              <span>Lunch with Client - 12:30 PM</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="widget clock-widget">
+          <div class="widget__header">
+            <span class="material-icons">schedule</span>
+            <span>World Clock</span>
+          </div>
+          <div class="clock-widget__content">
+            <div class="world-clock">
+              <span class="city">New York</span>
+              <span class="time" id="clockNewYork">--:--</span>
+            </div>
+            <div class="world-clock">
+              <span class="city">London</span>
+              <span class="time" id="clockLondon">--:--</span>
+            </div>
+            <div class="world-clock">
+              <span class="city">Tokyo</span>
+              <span class="time" id="clockTokyo">--:--</span>
+            </div>
+            <div class="world-clock">
+              <span class="city">Sydney</span>
+              <span class="time" id="clockSydney">--:--</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="widget stock-widget">
+          <div class="widget__header">
+            <span class="material-icons">trending_up</span>
+            <span>Stocks</span>
+          </div>
+          <div class="stock-widget__content">
+            <div class="stock-item">
+              <div class="stock-info">
+                <span class="stock-symbol">AAPL</span>
+                <span class="stock-name">Apple Inc.</span>
+              </div>
+              <div class="stock-price up">
+                <span class="price">$178.72</span>
+                <span class="change">+2.34 (1.33%)</span>
+              </div>
+            </div>
+            <div class="stock-item">
+              <div class="stock-info">
+                <span class="stock-symbol">GOOGL</span>
+                <span class="stock-name">Alphabet Inc.</span>
+              </div>
+              <div class="stock-price down">
+                <span class="price">$141.80</span>
+                <span class="change">-0.89 (0.62%)</span>
+              </div>
+            </div>
+            <div class="stock-item">
+              <div class="stock-info">
+                <span class="stock-symbol">MSFT</span>
+                <span class="stock-name">Microsoft Corp.</span>
+              </div>
+              <div class="stock-price up">
+                <span class="price">$378.91</span>
+                <span class="change">+5.67 (1.52%)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="notification-center__notifications">
+        <div class="notifications-header">
+          <h3>Notifications</h3>
+          <button class="clear-all-btn" id="clearAllNotifications">Clear All</button>
+        </div>
+        <div class="notifications-list" id="notificationsList">
+        </div>
+      </div>
+    </div>
+
+    <div class="notification-banners" id="notificationBanners">
+    </div>
   </div>
     <div class="spotlight_serach">
       <svg width="24" height="24">
@@ -698,6 +1034,7 @@
 
     <script src="./javascript/script.js"></script>
     <script src="./javascript/app.js"></script>
+    <script src="./javascript/notification-calendar.js"></script>
     
   </body>
 </html>
