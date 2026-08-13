@@ -713,7 +713,8 @@ li > .menu__container > .grid__controling .control_center--grid {
 
 .terminal .window__taskbar,
 .Vscode .window__taskbar,
-.maps .window__taskbar {
+.maps .window__taskbar,
+.netflix .window__taskbar {
   height: 9%;
 }
 

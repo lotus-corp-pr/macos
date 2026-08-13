@@ -93,6 +93,18 @@ const blockblastApp = {
   opening_l: document.querySelector(".open-blockblast-lunching"),
 };
 
+// Netflix App
+const netflixApp = {
+  app_name: document.querySelector("#netflix"),
+  window: document.querySelector(".netflix"),
+  full: document.querySelector(".full-netflix"),
+  close: document.querySelector(".close-netflix"),
+  backfull: document.querySelector(".backfull-netflix"),
+  point: document.querySelector("#point-netflix"),
+  opening: document.querySelector(".open-netflix"),
+  opening_l: document.querySelector(".open-netflix-lunching"),
+};
+
 // Launchpad
 const launchpad = {
   container: document.querySelector(".container__Window"),
@@ -312,6 +324,30 @@ blockblastApp.opening_l.addEventListener("click", handleOpenBlockBast_lunchpad);
 blockblastApp.close.addEventListener("click", () =>
   close_window(blockblastApp.window, blockblastApp.point, blockblastApp.app_name)
 );
+
+// Netflix app listeners
+function handleOpenNetflix_lunchpad() {
+  launchpad.container.style.display = "flex";
+  elements.navbar.style.display = "flex";
+  launchpad.window.style.display = "none";
+  launchpad.point.style.display = "none";
+  netflixApp.window.style.display = "block";
+  netflixApp.app_name.style.display = "block";
+  netflixApp.point.style.display = "block";
+}
+netflixApp.opening.addEventListener("click", () =>
+  open_window(netflixApp.window, netflixApp.point, netflixApp.app_name)
+);
+netflixApp.opening_l.addEventListener("click", handleOpenNetflix_lunchpad);
+netflixApp.close.addEventListener("click", () =>
+  close_window(netflixApp.window, netflixApp.point, netflixApp.app_name)
+);
+netflixApp.full.addEventListener("click", () =>
+  handleFullScreen(netflixApp.window)
+);
+netflixApp.backfull.addEventListener("click", () =>
+  handleMinimize(netflixApp.window)
+);
 elements.open_spotlight.addEventListener("click", handleopen_spotlight);
 launchpad.searchbox.addEventListener("input", handleLaunchpadSearch);
 elements.clockWrapper.addEventListener("click", () => {
@@ -389,6 +425,7 @@ $(function () {
   $(".spotlight_serach").draggable();
   $(".maps").draggable();
   $(".blockblast").draggable({ handle: ".bb__header" });
+  $(".netflix").draggable();
 });
 
 // Date and time

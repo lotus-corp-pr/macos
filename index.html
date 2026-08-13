@@ -102,6 +102,9 @@
         <li class="leftLi app_name" id="blockblast">
           <p>Block Blast</p>
         </li>
+        <li class="leftLi app_name" id="netflix">
+          <p>Netflix</p>
+        </li>
         <li class="leftLi">
           File
           <ul>
@@ -377,6 +380,10 @@
         <img src="./icon/dock/blockblast.svg" alt="Block Blast Logo" />
         <hr class="point hidden" id="point-blockblast" />
       </button>
+      <button class="icon open-netflix">
+        <img src="./icon/dock/netflix.svg" alt="Netflix Logo" />
+        <hr class="point hidden" id="point-netflix" />
+      </button>
       <hr class="column hidden" />
       <button class="icon">
         <img
@@ -419,6 +426,13 @@
         >
           <img src="./icon/dock/blockblast.svg" alt="" />
           <strong>Block Blast</strong>
+        </div>
+        <div
+          class="child-launchpad open-netflix-lunching"
+          data-keywords="Netflix,Streaming,Movies,Series"
+        >
+          <img src="./icon/dock/netflix.svg" alt="" />
+          <strong>Netflix</strong>
         </div>
       </div>
     </div>
@@ -538,6 +552,30 @@
             height="100%" 
             src="https://maps.google.com/maps?q=2880%20Broadway,%20Amol&t=&z=13&ie=UTF8&iwloc=&output=embed">
           </iframe>
+        </div>
+      </div>
+
+      <!-- Netflix app -->
+      <div class="window netflix">
+        <div class="window__taskbar">
+          <div class="window__taskbar--actions">
+            <button class="close-netflix"></button>
+            <button class="backfull-netflix"></button>
+            <button class="full-netflix"></button>
+          </div>
+          <div class="window__taskbar--content">
+            <h2>Netflix</h2>
+          </div>
+        </div>
+        <div class="content">
+          <iframe
+            width="100%"
+            height="100%"
+            src="https://www.netflix.com/"
+            frameborder="0"
+            allow="autoplay; encrypted-media; fullscreen"
+            allowfullscreen
+          ></iframe>
         </div>
       </div>
       <!-- calculator -->
