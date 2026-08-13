@@ -310,40 +310,72 @@
     });
   }
 
+  // Build a ghost element whose cells are exactly the same size as a board
+  // cell, so the ghost's geometry matches the drop target geometry 1:1.
+  function buildGhost(piece, boardCellPx) {
+    const shape = piece.shape;
+    const maxRow = Math.max(...shape.map((s) => s[0]));
+    const maxCol = Math.max(...shape.map((s) => s[1]));
+    const rows = maxRow + 1;
+    const cols = maxCol + 1;
+
+    const grid = document.createElement("div");
+    grid.className = "bb__piece-grid bb__piece--ghost";
+    grid.style.position = "fixed";
+    grid.style.left = "0px";
+    grid.style.top = "0px";
+    grid.style.pointerEvents = "none";
+    grid.style.zIndex = "10000";
+    grid.style.margin = "0";
+    grid.style.gridTemplateColumns = "repeat(" + cols + ", " + boardCellPx + "px)";
+    grid.style.gridTemplateRows = "repeat(" + rows + ", " + boardCellPx + "px)";
+    grid.style.gap = "0";
+
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const cell = document.createElement("div");
+        cell.className = "bb__piece-cell";
+        const isFilled = shape.some((s) => s[0] === r && s[1] === c);
+        if (isFilled) {
+          cell.style.background = piece.color.main;
+          cell.style.borderBottom = "3px solid " + piece.color.dark;
+          cell.style.borderRadius = "6px";
+          cell.style.boxShadow =
+            "inset 0 2px 0 rgba(255,255,255,0.35), inset 0 -3px 0 rgba(0,0,0,0.15)";
+        }
+        grid.appendChild(cell);
+      }
+    }
+    return grid;
+  }
+
   function startDrag(piece, el, e) {
-    const rect = el.getBoundingClientRect();
-    // Build a ghost that follows the pointer. Its cells match board cell size.
-    const ghost = el.cloneNode(true);
-    ghost.classList.add("bb__piece--ghost");
-    ghost.style.position = "fixed";
-    ghost.style.left = "0px";
-    ghost.style.top = "0px";
-    ghost.style.pointerEvents = "none";
-    ghost.style.zIndex = "10000";
-    ghost.style.margin = "0";
+    const boardRect = dom.boardEl.getBoundingClientRect();
+    const boardCellPx = boardRect.width / GRID_SIZE;
+
+    const ghost = buildGhost(piece, boardCellPx);
     document.body.appendChild(ghost);
 
-    // Determine the pixel size of a single block in the source piece
-    // so we can anchor the ghost's first filled cell under the pointer.
+    // The ghost's top-left represents the [0,0] offset of the shape.
+    // We anchor it so the shape's first filled cell sits under the pointer,
+    // but offset slightly upward so the finger doesn't cover the piece.
     const filledCells = el.querySelectorAll(".bb__piece-cell--filled");
     const firstCellRect = filledCells[0].getBoundingClientRect();
-    const cellPx = firstCellRect.width;
 
-    // Offset from the piece wrapper's top-left to the first filled cell's
-    // top-left, so we can position the ghost so that block sits on the pointer.
-    const anchorX = firstCellRect.left - rect.left;
-    const anchorY = firstCellRect.top - rect.top;
+    // Where within the source first cell did the user grab?
+    const grabOffsetX = e.clientX - firstCellRect.left;
+    const grabOffsetY = e.clientY - firstCellRect.top;
+
+    // Lift the piece above the finger by ~1.5 cells so it's visible.
+    const lift = boardCellPx * 1.5;
 
     dragState = {
       piece: piece,
       ghost: ghost,
-      cellPx: cellPx,
-      anchorX: anchorX,
-      anchorY: anchorY,
-      // remember the pointer offset within the first cell so the ghost
-      // stays naturally under the finger/cursor.
-      grabOffsetX: e.clientX - firstCellRect.left,
-      grabOffsetY: e.clientY - firstCellRect.top,
+      boardCellPx: boardCellPx,
+      grabOffsetX: grabOffsetX,
+      grabOffsetY: grabOffsetY,
+      lift: lift,
     };
 
     moveGhost(e.clientX, e.clientY);
@@ -356,26 +388,27 @@
 
   function moveGhost(x, y) {
     if (!dragState) return;
-    // Position ghost so the grabbed block sits where the pointer is,
-    // preserving the grab offset so the block doesn't jump.
-    const left = x - dragState.anchorX - dragState.grabOffsetX;
-    const top = y - dragState.anchorY - dragState.grabOffsetY;
+    // The ghost's top-left (its shape [0,0]) should be positioned so that
+    // the grabbed cell stays under the pointer, then lifted above the finger.
+    const left = x - dragState.grabOffsetX;
+    const top = y - dragState.grabOffsetY - dragState.lift;
     dragState.ghost.style.left = left + "px";
     dragState.ghost.style.top = top + "px";
   }
 
+  // Returns the board cell [row, col] that the ghost's [0,0] block maps to.
+  // Re-reads the board rect on every call so the target stays correct even
+  // if the window was dragged to a new position since the drag started.
   function computeDropTarget(x, y) {
+    // The ghost's [0,0] top-left position (same formula as moveGhost).
+    const ghostLeft = x - dragState.grabOffsetX;
+    const ghostTop = y - dragState.grabOffsetY - dragState.lift;
+
     const boardRect = dom.boardEl.getBoundingClientRect();
-    const cellW = boardRect.width / GRID_SIZE;
-    const cellH = boardRect.height / GRID_SIZE;
+    const cellW = dragState.boardCellPx;
 
-    // Use the ghost's first filled block position (pointer offset by grab)
-    // to compute the anchor cell.
-    const anchorX = x - dragState.grabOffsetX;
-    const anchorY = y - dragState.grabOffsetY;
-
-    const col = Math.round((anchorX - boardRect.left) / cellW);
-    const row = Math.round((anchorY - boardRect.top) / cellH);
+    const col = Math.round((ghostLeft - boardRect.left) / cellW);
+    const row = Math.round((ghostTop - boardRect.top) / cellW);
 
     if (col < 0 || col >= GRID_SIZE || row < 0 || row >= GRID_SIZE) return null;
     return { row: row, col: col };
