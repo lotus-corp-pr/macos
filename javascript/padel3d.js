@@ -41,8 +41,9 @@
 
   function initScene() {
     if (scene) return; // already built
-    const w = dom.canvasHost.clientWidth || 360;
-    const h = dom.canvasHost.clientHeight || 380;
+    // Use real dimensions; fall back to sensible defaults if still hidden.
+    const w = dom.canvasHost.clientWidth || 340;
+    const h = dom.canvasHost.clientHeight || 300;
 
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x0d2b3d);
@@ -55,6 +56,9 @@
     renderer.setSize(w, h);
     renderer.setPixelRatio(window.devicePixelRatio);
     dom.canvasHost.appendChild(renderer.domElement);
+
+    // Re-fit to the real container size once the layout settles.
+    setTimeout(onResize, 50);
 
     // Lights
     const ambient = new THREE.AmbientLight(0xffffff, 0.6);
@@ -267,16 +271,25 @@
     buildDomRefs();
     if (!initialized) {
       initialized = true;
-      // Keyboard listeners
       window.addEventListener("keydown", (e) => handleKey(e, true));
       window.addEventListener("keyup", (e) => handleKey(e, false));
       window.addEventListener("resize", onResize);
       if (dom.restartBtn) {
         dom.restartBtn.addEventListener("click", reset);
       }
-      start();
-      updateScore();
     }
+    // Check that Three.js is available before starting.
+    if (typeof THREE === "undefined") {
+      dom.msgEl.textContent = "Error: Three.js no se pudo cargar. Revisa tu conexión.";
+      dom.msgEl.style.display = "block";
+      return;
+    }
+    // Always (re)start the scene when the window is opened, so the canvas
+    // picks up the real dimensions after becoming visible.
+    start();
+    updateScore();
+    // Force a resize shortly after to catch the final layout.
+    setTimeout(onResize, 60);
   }
 
   window.Padel3D = { init: init };
