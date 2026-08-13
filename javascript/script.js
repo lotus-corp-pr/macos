@@ -282,22 +282,31 @@ calculatorApp.close.addEventListener("click", () =>
 calculatorApp.opening_l.addEventListener("click", handleOpenCal_lunchpad);
 
 // Block Blast app listeners
+function safeInitBlockBlast() {
+  try {
+    if (window.BlockBlast) window.BlockBlast.init();
+  } catch (e) {
+    console.error("BlockBlast init failed:", e);
+  }
+}
 function handleOpenBlockBast_lunchpad() {
-  blockblastApp.window.style.display = "flex";
-  blockblastApp.app_name.style.display = "block";
+  // Show the window first, then initialize the game so a game error
+  // never prevents the window from appearing.
   launchpad.container.style.display = "flex";
   elements.navbar.style.display = "flex";
   launchpad.window.style.display = "none";
-  blockblastApp.point.style.display = "block";
   launchpad.point.style.display = "none";
-  if (window.BlockBlast) window.BlockBlast.init();
+  blockblastApp.window.style.display = "flex";
+  blockblastApp.app_name.style.display = "block";
+  blockblastApp.point.style.display = "block";
+  safeInitBlockBlast();
 }
 blockblastApp.opening.addEventListener("click", () => {
   open_window(blockblastApp.window, blockblastApp.point, blockblastApp.app_name);
-  // flex layout is required for the game window (display:flex in CSS sets it,
-  // but open_window sets display:block, so restore flex).
+  // flex layout is required for the game window (open_window sets
+  // display:block, so restore flex).
   blockblastApp.window.style.display = "flex";
-  if (window.BlockBlast) window.BlockBlast.init();
+  safeInitBlockBlast();
 });
 blockblastApp.opening_l.addEventListener("click", handleOpenBlockBast_lunchpad);
 blockblastApp.close.addEventListener("click", () =>

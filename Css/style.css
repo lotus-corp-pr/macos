@@ -1334,6 +1334,7 @@ li > .menu__container > .grid__controling .control_center--grid {
 .blockblast {
   display: none;
   position: relative;
+  z-index: 11;
   width: 360px;
   max-width: 92vw;
   height: 540px;
