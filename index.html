@@ -102,8 +102,8 @@
         <li class="leftLi app_name" id="blockblast">
           <p>Block Blast</p>
         </li>
-        <li class="leftLi app_name" id="netflix">
-          <p>Netflix</p>
+        <li class="leftLi app_name" id="padel">
+          <p>Padel 3D</p>
         </li>
         <li class="leftLi">
           File
@@ -380,9 +380,9 @@
         <img src="./icon/dock/blockblast.svg" alt="Block Blast Logo" />
         <hr class="point hidden" id="point-blockblast" />
       </button>
-      <button class="icon open-netflix">
-        <img src="./icon/dock/netflix.svg" alt="Netflix Logo" />
-        <hr class="point hidden" id="point-netflix" />
+      <button class="icon open-padel">
+        <img src="./icon/dock/padel.svg" alt="Padel Logo" />
+        <hr class="point hidden" id="point-padel" />
       </button>
       <hr class="column hidden" />
       <button class="icon">
@@ -428,11 +428,11 @@
           <strong>Block Blast</strong>
         </div>
         <div
-          class="child-launchpad open-netflix-lunching"
-          data-keywords="Netflix,Streaming,Movies,Series"
+          class="child-launchpad open-padel-lunching"
+          data-keywords="Padel,3D,Game,Sport,Tennis"
         >
-          <img src="./icon/dock/netflix.svg" alt="" />
-          <strong>Netflix</strong>
+          <img src="./icon/dock/padel.svg" alt="" />
+          <strong>Padel 3D</strong>
         </div>
       </div>
     </div>
@@ -555,27 +555,26 @@
         </div>
       </div>
 
-      <!-- Netflix app -->
-      <div class="window netflix">
+      <!-- Padel 3D game -->
+      <div class="window padel3d">
         <div class="window__taskbar">
           <div class="window__taskbar--actions">
-            <button class="close-netflix"></button>
-            <button class="backfull-netflix"></button>
-            <button class="full-netflix"></button>
+            <button class="close-padel"></button>
+            <button class="backfull-padel"></button>
+            <button class="full-padel"></button>
           </div>
           <div class="window__taskbar--content">
-            <h2>Netflix</h2>
+            <h2>Padel 3D</h2>
           </div>
         </div>
-        <div class="content">
-          <iframe
-            width="100%"
-            height="100%"
-            src="https://www.netflix.com/"
-            frameborder="0"
-            allow="autoplay; encrypted-media; fullscreen"
-            allowfullscreen
-          ></iframe>
+        <div class="content padel3d__content">
+          <div class="padel3d__scores">
+            <span class="padel3d__player padel3d__p1">P1: <b class="padel3d__score1">0</b></span>
+            <span class="padel3d__player padel3d__p2">P2: <b class="padel3d__score2">0</b></span>
+          </div>
+          <div class="padel3d__canvas"></div>
+          <div class="padel3d__msg" style="display:none"></div>
+          <button class="padel3d__restart">Reiniciar</button>
         </div>
       </div>
       <!-- calculator -->
@@ -682,7 +681,9 @@
       <input type="search" placeholder="Spotlight Search" />
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="./javascript/blockblast.js"></script>
+    <script src="./javascript/padel3d.js"></script>
     <script src="./javascript/script.js"></script>
     <script src="./javascript/app.js"></script>
     
