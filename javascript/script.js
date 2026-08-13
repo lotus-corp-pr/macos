@@ -93,16 +93,16 @@ const blockblastApp = {
   opening_l: document.querySelector(".open-blockblast-lunching"),
 };
 
-// Netflix App
-const netflixApp = {
-  app_name: document.querySelector("#netflix"),
-  window: document.querySelector(".netflix"),
-  full: document.querySelector(".full-netflix"),
-  close: document.querySelector(".close-netflix"),
-  backfull: document.querySelector(".backfull-netflix"),
-  point: document.querySelector("#point-netflix"),
-  opening: document.querySelector(".open-netflix"),
-  opening_l: document.querySelector(".open-netflix-lunching"),
+// Padel 3D App
+const padelApp = {
+  app_name: document.querySelector("#padel"),
+  window: document.querySelector(".padel3d"),
+  full: document.querySelector(".full-padel"),
+  close: document.querySelector(".close-padel"),
+  backfull: document.querySelector(".backfull-padel"),
+  point: document.querySelector("#point-padel"),
+  opening: document.querySelector(".open-padel"),
+  opening_l: document.querySelector(".open-padel-lunching"),
 };
 
 // Launchpad
@@ -325,28 +325,37 @@ blockblastApp.close.addEventListener("click", () =>
   close_window(blockblastApp.window, blockblastApp.point, blockblastApp.app_name)
 );
 
-// Netflix app listeners
-function handleOpenNetflix_lunchpad() {
+// Padel 3D app listeners
+function safeInitPadel() {
+  try {
+    if (window.Padel3D) window.Padel3D.init();
+  } catch (e) {
+    console.error("Padel3D init failed:", e);
+  }
+}
+function handleOpenPadel_lunchpad() {
   launchpad.container.style.display = "flex";
   elements.navbar.style.display = "flex";
   launchpad.window.style.display = "none";
   launchpad.point.style.display = "none";
-  netflixApp.window.style.display = "block";
-  netflixApp.app_name.style.display = "block";
-  netflixApp.point.style.display = "block";
+  padelApp.window.style.display = "block";
+  padelApp.app_name.style.display = "block";
+  padelApp.point.style.display = "block";
+  safeInitPadel();
 }
-netflixApp.opening.addEventListener("click", () =>
-  open_window(netflixApp.window, netflixApp.point, netflixApp.app_name)
+padelApp.opening.addEventListener("click", () => {
+  open_window(padelApp.window, padelApp.point, padelApp.app_name);
+  safeInitPadel();
+});
+padelApp.opening_l.addEventListener("click", handleOpenPadel_lunchpad);
+padelApp.close.addEventListener("click", () =>
+  close_window(padelApp.window, padelApp.point, padelApp.app_name)
 );
-netflixApp.opening_l.addEventListener("click", handleOpenNetflix_lunchpad);
-netflixApp.close.addEventListener("click", () =>
-  close_window(netflixApp.window, netflixApp.point, netflixApp.app_name)
+padelApp.full.addEventListener("click", () =>
+  handleFullScreen(padelApp.window)
 );
-netflixApp.full.addEventListener("click", () =>
-  handleFullScreen(netflixApp.window)
-);
-netflixApp.backfull.addEventListener("click", () =>
-  handleMinimize(netflixApp.window)
+padelApp.backfull.addEventListener("click", () =>
+  handleMinimize(padelApp.window)
 );
 elements.open_spotlight.addEventListener("click", handleopen_spotlight);
 launchpad.searchbox.addEventListener("input", handleLaunchpadSearch);
@@ -425,7 +434,7 @@ $(function () {
   $(".spotlight_serach").draggable();
   $(".maps").draggable();
   $(".blockblast").draggable({ handle: ".bb__header" });
-  $(".netflix").draggable();
+  $(".padel3d").draggable();
 });
 
 // Date and time
