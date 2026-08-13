@@ -83,6 +83,16 @@ const mapsApp = {
   opening: document.querySelector(".open-map"),
 };
 
+// Block Blast App
+const blockblastApp = {
+  app_name: document.querySelector("#blockblast"),
+  window: document.querySelector(".blockblast"),
+  close: document.querySelector(".close-blockblast"),
+  point: document.querySelector("#point-blockblast"),
+  opening: document.querySelector(".open-blockblast"),
+  opening_l: document.querySelector(".open-blockblast-lunching"),
+};
+
 // Launchpad
 const launchpad = {
   container: document.querySelector(".container__Window"),
@@ -270,6 +280,29 @@ calculatorApp.close.addEventListener("click", () =>
   )
 );
 calculatorApp.opening_l.addEventListener("click", handleOpenCal_lunchpad);
+
+// Block Blast app listeners
+function handleOpenBlockBast_lunchpad() {
+  blockblastApp.window.style.display = "flex";
+  blockblastApp.app_name.style.display = "block";
+  launchpad.container.style.display = "flex";
+  elements.navbar.style.display = "flex";
+  launchpad.window.style.display = "none";
+  blockblastApp.point.style.display = "block";
+  launchpad.point.style.display = "none";
+  if (window.BlockBlast) window.BlockBlast.init();
+}
+blockblastApp.opening.addEventListener("click", () => {
+  open_window(blockblastApp.window, blockblastApp.point, blockblastApp.app_name);
+  // flex layout is required for the game window (display:flex in CSS sets it,
+  // but open_window sets display:block, so restore flex).
+  blockblastApp.window.style.display = "flex";
+  if (window.BlockBlast) window.BlockBlast.init();
+});
+blockblastApp.opening_l.addEventListener("click", handleOpenBlockBast_lunchpad);
+blockblastApp.close.addEventListener("click", () =>
+  close_window(blockblastApp.window, blockblastApp.point, blockblastApp.app_name)
+);
 elements.open_spotlight.addEventListener("click", handleopen_spotlight);
 launchpad.searchbox.addEventListener("input", handleLaunchpadSearch);
 elements.clockWrapper.addEventListener("click", () => {
@@ -346,6 +379,7 @@ $(function () {
   $(".Vscode").draggable();
   $(".spotlight_serach").draggable();
   $(".maps").draggable();
+  $(".blockblast").draggable({ handle: ".bb__header" });
 });
 
 // Date and time
