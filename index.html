@@ -102,6 +102,9 @@
         <li class="leftLi app_name" id="map">
           <p>Maps</p>
         </li>
+        <li class="leftLi app_name" id="blockblast">
+          <p>Block Blast</p>
+        </li>
         <li class="leftLi">
           File
           <ul>
@@ -395,6 +398,10 @@
         />
         <hr class="point" id="point-terminal" />
       </button>
+      <button class="icon open-blockblast">
+        <img src="./icon/dock/blockblast.svg" alt="Block Blast Logo" class="hidden" />
+        <hr class="point hidden" id="point-blockblast" />
+      </button>
       <button class="icon">
         <img
           src="./icon/dock/preferences.png"
@@ -503,6 +510,13 @@
         <div class="child-launchpad" data-keywords="zoom,video,call">
           <img src="./icon/Launchpad/zoom.png" alt="" />
           <strong>Zoom</strong>
+        </div>
+        <div
+          class="child-launchpad open-blockblast-lunching"
+          data-keywords="Block Blast,Block,Game,Puzzle"
+        >
+          <img src="./icon/dock/blockblast.svg" alt="" />
+          <strong>Block Blast</strong>
         </div>
       </div>
     </div>
@@ -660,6 +674,38 @@
           <button value="=" class="button operator r-radius">=</button>
         </div>
       </div>
+
+      <!-- Block Blast game -->
+      <div class="blockblast">
+        <div class="bb__header">
+          <div class="bb__header-actions">
+            <button class="close-blockblast"></button>
+            <button class="min-blockblast" disabled></button>
+            <button class="full-blockblast" disabled></button>
+          </div>
+          <span class="bb__title">Block Blast</span>
+        </div>
+        <div class="bb__body">
+          <div class="bb__scores">
+            <div class="bb__score-box">
+              <span class="bb__score-label">Score</span>
+              <span class="bb__score-value">0</span>
+            </div>
+            <div class="bb__score-box">
+              <span class="bb__score-label">Best</span>
+              <span class="bb__best-value">0</span>
+            </div>
+          </div>
+          <div class="bb__board"></div>
+          <div class="bb__tray"></div>
+        </div>
+        <div class="bb__gameover">
+          <h2>Game Over</h2>
+          <p>Final Score</p>
+          <p class="bb__gameover-score">0</p>
+          <button class="bb__restart">Play Again</button>
+        </div>
+      </div>
     </div>
 
     <!-- Widgets panel -->
@@ -697,6 +743,7 @@
     </div>
 
     <script src="./javascript/script.js"></script>
+    <script src="./javascript/blockblast.js"></script>
     <script src="./javascript/app.js"></script>
     
   </body>
