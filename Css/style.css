@@ -1719,3 +1719,136 @@ li > .menu__container > .grid__controling .control_center--grid {
 .padel3d__restart:hover {
   background: #1565c0;
 }
+
+/* Mode toggle button (1P / 2P) */
+.padel3d__mode {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  padding: 4px 14px;
+  font-family: "Lexend", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.padel3d__mode:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.padel3d__hint {
+  color: rgba(255, 255, 255, 0.55);
+  font-family: "Lexend", sans-serif;
+  font-size: 11px;
+  margin: 0;
+  text-align: center;
+}
+
+/* The canvas host is focusable so keyboard controls work. */
+.padel3d__canvas:focus {
+  outline: 2px solid rgba(30, 144, 255, 0.6);
+  outline-offset: -2px;
+}
+
+/* ===================== Notes app enhancements ===================== */
+.content__sidebar--note-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 0;
+}
+
+.content__sidebar--note-item input {
+  flex: 1;
+  background: transparent;
+  color: inherit;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 2px 0;
+  font-size: 13px;
+}
+
+.note-item__remove {
+  color: #999;
+  font-size: 16px;
+  line-height: 1;
+  padding: 0 4px;
+  cursor: pointer;
+}
+
+.note-item__remove:hover {
+  color: #ff4757;
+}
+
+.content__typing {
+  display: none;
+}
+
+/* ===================== Accessibility & motion ===================== */
+
+/* Visible focus for keyboard users. */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+[contenteditable]:focus-visible,
+.padel3d__canvas:focus-visible {
+  outline: 2px solid #1e90ff;
+  outline-offset: 2px;
+}
+
+/* Respect users who prefer reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Custom scrollbars (webkit) for terminal/notes. */
+.terminal_content::-webkit-scrollbar,
+.note .content::-webkit-scrollbar {
+  width: 8px;
+}
+.terminal_content::-webkit-scrollbar-track,
+.note .content::-webkit-scrollbar-track {
+  background: transparent;
+}
+.terminal_content::-webkit-scrollbar-thumb,
+.note .content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 4px;
+}
+
+/* Make the spotlight search input usable. */
+.spotlight_serach input {
+  background: transparent;
+  color: #fff;
+  font-size: 18px;
+  width: 100%;
+}
+
+/* Calculator window behaves like a window. */
+.calculator {
+  touch-action: none;
+}
+
+/* Small screens: keep windows reachable. */
+@media screen and (max-width: 760px) {
+  .window {
+    min-width: 90%;
+    max-width: 96%;
+    height: 70%;
+  }
+  .dock .icon img {
+    width: 2.8rem;
+  }
+  .dock .icon:hover img {
+    width: 4.5rem;
+    margin: 0 0 22px 0;
+  }
+}

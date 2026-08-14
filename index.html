@@ -1,71 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- ios support -->
-      <link rel="apple-touch-icon" href="./icon/manifest/192x192.png" />
-      <meta name="apple-mobile-web-app-status-bar" content="#DCE9E9" />
-      <meta name="theme-color" content="#d1d1d1" />
-        
-    <title>Mac os in web!</title>
-
-    <link
-      rel="shortcut icon"
-      type="image/png"
-      href="./icon/manifest/512x512.png"
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta
+      name="description"
+      content="macOS Monterey simulator in the browser: a draggable desktop with Dock, Launchpad, Spotlight, Terminal, Notes, Calculator, Maps and games. Built with HTML, CSS and vanilla JavaScript."
     />
-    <!-- Google fonts -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Baloo+Tammudu+2&family=Roboto:wght@100&display=swap"
-      rel="stylesheet"
-    />
+    <meta name="author" content="lotus-corp-pr" />
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Lexend:wght@300&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Open Graph / social -->
+    <meta property="og:title" content="macOS Web Desktop" />
+    <meta property="og:description" content="An interactive macOS desktop simulator running in your browser." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@600&display=swap"
-      rel="stylesheet"
-    />
+    <!-- PWA / iOS support -->
+    <link rel="apple-touch-icon" href="./icon/manifest/192x192.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="macOS Web" />
+    <meta name="theme-color" content="#1d1135" />
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap"
-      rel="stylesheet"
-    />
+    <title>macOS Web — Desktop Simulator</title>
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="icon" type="image/png" href="./icon/manifest/512x512.png" />
+
+    <!-- Google Fonts (preconnect for faster handshake) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500|Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+      href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&family=Roboto+Mono:wght@400;500&family=Roboto:wght@300;400;500&family=Material+Icons|Material+Icons+Outlined&display=swap"
     />
-    <!-- Jquery -->
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-    <!-- Local link -->
+    <!-- Local assets -->
     <link rel="manifest" href="./manifest.json" />
     <link rel="stylesheet" href="./Css/style.css" />
-
   </head>
-  
-  <body onload="digi(), calculateBattery()">
-    <!-- <div id="loading"></div> -->
+
+  <body>
     <div class="navbar">
       <ul>
         <li class="leftLi logo">
           <img src="./icon/apple-white.png" alt="Apple logo" />
           <ul>
             <li>
-              <button><a href="https://github.com/mhmdmhd6/Mac-OS-Desktop" target="_blank">About This Mac</a></button>
+              <button><a href="https://github.com/lotus-corp-pr/macos" target="_blank" rel="noopener">About This Mac</a></button>
             </li>
             <li>
               <button>System Preferences...</button>
@@ -140,11 +121,11 @@
       </ul>
 
       <ul class="navbar__right">
-        <li class="battery">
+        <li class="battery" title="Battery status">
           <span class="battery__text"></span>
           <div class="battery__container">
             <div class="battery__progress">
-              <img class="is-charging" src="./icon/charging.png" alt="Battery is charging">
+              <img class="is-charging" src="./icon/charging.png" alt="Battery is charging" />
             </div>
           </div>
 
@@ -158,8 +139,8 @@
             <button>Battery Preferences...</button>
           </div>
         </li>
-        <li class="wifi">
-          <svg width="24" height="24">
+        <li class="wifi" title="Wi-Fi">
+          <svg width="24" height="24" aria-hidden="true">
             <path
               d="M12 6c3.537 0 6.837 1.353 9.293 3.809l1.414-1.414C19.874 5.561 16.071 4 12 4 7.929 4.001 4.126 5.561 1.293 8.395l1.414 1.414C5.163 7.353 8.463 6 12 6zM17.671 14.307c-3.074-3.074-8.268-3.074-11.342 0l1.414 1.414c2.307-2.307 6.207-2.307 8.514 0L17.671 14.307z"
             ></path>
@@ -169,8 +150,8 @@
             <circle cx="12" cy="18" r="2"></circle>
           </svg>
         </li>
-        <li class="open_Search">
-          <svg width="20" height="20">
+        <li class="open_Search" title="Spotlight (search)">
+          <svg width="20" height="20" aria-hidden="true">
             <path
               d="M10,18c1.846,0,3.543-0.635,4.897-1.688l4.396,4.396l1.414-1.414l-4.396-4.396C17.365,13.543,18,11.846,18,10 c0-4.411-3.589-8-8-8s-8,3.589-8,8S5.589,18,10,18z M10,4c3.309,0,6,2.691,6,6s-2.691,6-6,6s-6-2.691-6-6S6.691,4,10,4z"
             ></path>
@@ -186,7 +167,7 @@
             <div class="grid__controling">
               <div class="control_center--grid col-5">
                 <button>
-                  <svg width="24" height="24">
+                  <svg width="24" height="24" aria-hidden="true">
                     <path
                       d="M12 6c3.537 0 6.837 1.353 9.293 3.809l1.414-1.414C19.874 5.561 16.071 4 12 4 7.929 4.001 4.126 5.561 1.293 8.395l1.414 1.414C5.163 7.353 8.463 6 12 6zM17.671 14.307c-3.074-3.074-8.268-3.074-11.342 0l1.414 1.414c2.307-2.307 6.207-2.307 8.514 0L17.671 14.307z"
                     />
@@ -198,7 +179,7 @@
                   Wi-Fi
                 </button>
                 <button>
-                  <svg height="24px" width="24px" viewBox="0 0 100 100">
+                  <svg height="24px" width="24px" viewBox="0 0 100 100" aria-hidden="true">
                     <path
                       d="M62.6 68.501c-1.582 1.637-4.2 1.637-5.782.055-1.636-1.582-1.691-4.146-.109-5.783 1.8-1.8 2.836-4.146 2.836-6.765 0-5.292-4.255-9.547-9.545-9.547s-9.545 4.255-9.545 9.547c0 2.619 1.036 4.965 2.836 6.765 1.582 1.637 1.527 4.255-.109 5.837-1.582 1.528-4.2 1.528-5.782-.109-3.109-3.164-5.127-7.638-5.127-12.493 0-9.82 7.964-17.73 17.727-17.73s17.727 7.91 17.727 17.73c0 4.855-2.018 9.329-5.127 12.493z"
                     />
@@ -212,7 +193,7 @@
                   AirDrop
                 </button>
                 <button>
-                  <svg height="24" width="24" viewBox="0 0 100 100">
+                  <svg height="24" width="24" viewBox="0 0 100 100" aria-hidden="true">
                     <path
                       d="M48.7 97.5c-.7 0-1.3-.1-1.9-.4-1.7-.8-2.8-2.5-2.8-4.3V60.7L30.1 73.1c-1.1 1-2.8.9-3.8-.2l-2.8-3.1c-1-1.1-.9-2.8.2-3.8l17.8-16-17.8-16c-1.1-1-1.2-2.7-.2-3.8l2.8-3.1c1-1.1 2.7-1.2 3.8-.2l13.8 12.4v-32c0-1.9 1.1-3.6 2.8-4.3 1.7-.8 3.7-.4 5.1.8l23.7 21.4c1 .9 1.6 2.2 1.6 3.5 0 1.3-.6 2.6-1.6 3.5L55.8 50l19.8 17.8c1 .9 1.6 2.2 1.6 3.5s-.6 2.6-1.6 3.5L51.8 96.3c-.9.8-2 1.2-3.1 1.2zm4.7-36.8v21.4l11.9-10.7-11.9-10.7zm0-42.8v21.4l11.9-10.7-11.9-10.7z"
                     />
@@ -227,6 +208,7 @@
                     width="24px"
                     version="1.1"
                     viewBox="0 0 48 48"
+                    aria-hidden="true"
                   >
                     <path
                       d="M6.67,23.6c0,10.75,8.75,19.5,19.5,19.5c5.89,0,11.46-2.69,15.16-7.25c-1.06,0.17-2.12,0.25-3.16,0.25  c-11.3,0-20.5-9.2-20.5-20.5c0-3.81,1.04-7.48,3.03-10.71C12.5,7.3,6.67,14.97,6.67,23.6z"
@@ -239,7 +221,7 @@
 
               <div class="control_center--grid col-3--brightness">
                 <button class="nobtn">
-                  <svg height="40px" width="40px" viewBox="0 0 100 100">
+                  <svg height="40px" width="40px" viewBox="0 0 100 100" aria-hidden="true">
                     <defs>
                       <g id="a">
                         <path
@@ -265,6 +247,7 @@
                       margin: 0 5px;
                     "
                     viewBox="0 0 84 84"
+                    aria-hidden="true"
                   >
                     <g transform="matrix(1,0,0,1,1,0)">
                       <path
@@ -292,8 +275,9 @@
                   max="100"
                   step="1"
                   value="100"
+                  aria-label="Brightness"
                 />
-                <img src="./icon/Sun.svg" alt="" width="25">
+                <img src="./icon/Sun.svg" alt="Brightness" width="25" />
               </div>
               <div class="control_center--grid col-12--volume sound">
                 <input
@@ -303,8 +287,9 @@
                   max="16"
                   step="1"
                   value="8"
+                  aria-label="Sound volume"
                 />
-                <img src="./icon/volume.svg" alt="" width="25">
+                <img src="./icon/volume.svg" alt="Volume" width="25" />
               </div>
               <div class="control_center--grid col-12--music">
                 <div class="musicPlayer">
@@ -322,7 +307,7 @@
             </div>
           </div>
         </li>
-        <li class="clock">
+        <li class="clock" title="Date and time">
           <span id="date" class="hidden"></span>
           <span id="clock"></span>
         </li>
@@ -348,7 +333,7 @@
     <!--Dock start-->
 
     <div class="dock">
-      <button accesskey="o" class="icon open-lunchpad">
+      <button accesskey="o" class="icon open-lunchpad" title="Launchpad">
         <img
           class="launching hidden"
           src="./icon/dock/launchpad.png"
@@ -356,19 +341,19 @@
         />
         <hr class="point hidden" id="point-launchpad" />
       </button>
-      <button class="icon open-map">
+      <button class="icon open-map" title="Maps">
         <img src="./icon/dock/maps.png" alt="maps Logo" class="hidden" />
         <hr class="point hidden" id="point-maps" />
       </button>
-      <button class="icon open-cal">
+      <button class="icon open-cal" title="Calculator">
         <img src="./icon/dock/calculator.png" alt="Calculator Logo" />
         <hr class="point" id="point-cal" />
       </button>
-      <button class="icon open-note">
+      <button class="icon open-note" title="Notes">
         <img src="./icon/dock/notes.png" alt="Notes Logo" />
         <hr class="point hidden" id="point-note" />
       </button>
-      <button accesskey="t" class="icon open-terminal">
+      <button accesskey="t" class="icon open-terminal" title="Terminal">
         <img
           src="./icon/dock/terminal.png"
           alt="Terminal Logo"
@@ -376,16 +361,16 @@
         />
         <hr class="point" id="point-terminal" />
       </button>
-      <button class="icon open-blockblast">
+      <button class="icon open-blockblast" title="Block Blast">
         <img src="./icon/dock/blockblast.svg" alt="Block Blast Logo" />
         <hr class="point hidden" id="point-blockblast" />
       </button>
-      <button class="icon open-padel">
+      <button class="icon open-padel" title="Padel 3D">
         <img src="./icon/dock/padel.svg" alt="Padel Logo" />
         <hr class="point hidden" id="point-padel" />
       </button>
       <hr class="column hidden" />
-      <button class="icon">
+      <button class="icon" title="Trash">
         <img
           src="./icon/dock/bin.png"
           alt="Trash Bin Logo"
@@ -399,7 +384,7 @@
     <div class="launchpad" id="launchpad">
       <div class="searchbox">
         <div class="searchContainer">
-          <svg width="24" height="24">
+          <svg width="24" height="24" aria-hidden="true">
             <path
               d="M10,18c1.846,0,3.543-0.635,4.897-1.688l4.396,4.396l1.414-1.414l-4.396-4.396C17.365,13.543,18,11.846,18,10 c0-4.411-3.589-8-8-8s-8,3.589-8,8S5.589,18,10,18z M10,4c3.309,0,6,2.691,6,6s-2.691,6-6,6s-6-2.691-6-6S6.691,4,10,4z"
             ></path>
@@ -409,6 +394,7 @@
             name="search"
             placeholder="Search"
             accesskey="s"
+            aria-label="Search apps"
           />
         </div>
       </div>
@@ -443,9 +429,9 @@
       <div class="window terminal">
         <div class="window__taskbar">
           <div class="window__taskbar--actions">
-            <button class="close"></button>
-            <button class="backfull"></button>
-            <button class="full"></button>
+            <button class="close" aria-label="Close"></button>
+            <button class="backfull" aria-label="Minimize"></button>
+            <button class="full" aria-label="Maximize"></button>
           </div>
           <div class="window__taskbar--content">
             <h2>Terminal</h2>
@@ -453,8 +439,8 @@
         </div>
         <div class="terminal_content">
           <p>Last Login : Yesterday on console</p>
+          <p>Type 'help' to see available commands.</p>
 
-          <!--    Oh My Zsh bash      -->
           <div class="terminal_line">
             <p>
               <span class="color_green">➜</span>&nbsp;&nbsp;
@@ -469,29 +455,28 @@
       <div class="window note">
         <div class="window__taskbar">
           <div class="window__taskbar--actions">
-            <button class="close-note"></button>
-            <button class="backfull-note"></button>
-            <button class="full-note">
-              <svg viewBox="0 0 13 13" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2"><path d="M4.871 3.553L9.37 8.098V3.553H4.871zm3.134 5.769L3.506 4.777v4.545h4.499z"></path><circle cx="6.438" cy="6.438" r="6.438" fill="black"></circle></svg>
+            <button class="close-note" aria-label="Close"></button>
+            <button class="backfull-note" aria-label="Minimize"></button>
+            <button class="full-note" aria-label="Maximize">
+              <svg viewBox="0 0 13 13" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" aria-hidden="true"><path d="M4.871 3.553L9.37 8.098V3.553H4.871zm3.134 5.769L3.506 4.777v4.545h4.499z"></path><circle cx="6.438" cy="6.438" r="6.438" fill="black"></circle></svg>
             </button>
           </div>
 
           <div class="window__taskbar--right">
-            
             <div class="Customize__icon hidden">
               <span class="material-icons" accesskey="v"> window </span>
             </div>
             <div class="Customize__icon">
-              <span class="material-icons adding" accesskey="n"> add_circle </span>
+              <span class="material-icons adding" accesskey="n" title="New note"> add_circle </span>
             </div>
             <div class="Customize__icon">
-              <span class="material-icons deleting" accesskey="r"> delete </span>
+              <span class="material-icons deleting" accesskey="r" title="Delete last note"> delete </span>
             </div>
             <div class="Customize__icon hidden">
               <span class="material-icons"> ios_share </span>
             </div>
             <div class="containerSearch">
-              <svg width="24" height="24">
+              <svg width="24" height="24" aria-hidden="true">
                 <path
                   d="M10,18c1.846,0,3.543-0.635,4.897-1.688l4.396,4.396l1.414-1.414l-4.396-4.396C17.365,13.543,18,11.846,18,10 c0-4.411-3.589-8-8-8s-8,3.589-8,8S5.589,18,10,18z M10,4c3.309,0,6,2.691,6,6s-2.691,6-6,6s-6-2.691-6-6S6.691,4,10,4z"
                 ></path>
@@ -501,6 +486,7 @@
                 name="search"
                 placeholder="search"
                 accesskey="s"
+                aria-label="Search notes"
               />
             </div>
           </div>
@@ -510,48 +496,30 @@
             <div class="content__sidebar--notes"></div>
           </div>
           <div class="Parent__content--typing">
-            <textarea cols="30" rows="12" class="content__typing"></textarea>
+            <textarea cols="30" rows="12" class="content__typing" placeholder="Start typing your note..."></textarea>
           </div>
         </div>
       </div>
       <!--note app end-->
 
-      <!-- Vscode app start-->
-      <!-- <div class="window Vscode">
-        <div class="window__taskbar">
-          <div class="window__taskbar--actions">
-            <button class="close-Vscode"></button>
-            <button class="backfull-Vscode"></button>
-            <button class="full-Vscode"></button>
-          </div>
-        </div>
-        <div class="content">
-          <iframe
-            src="https://github.dev/"
-            height="100%"
-            width="100%"
-          ></iframe>
-        </div>
-      </div> -->
-      <!-- Vscode app end -->
-      
       <div class="window maps">
         <div class="window__taskbar">
           <div class="window__taskbar--actions">
-            <button class="close-map"></button>
-            <button class="backfull-map"></button>
-            <button class="full-map"></button>
+            <button class="close-map" aria-label="Close"></button>
+            <button class="backfull-map" aria-label="Minimize"></button>
+            <button class="full-map" aria-label="Maximize"></button>
           </div>
           <div class="window__taskbar--content">
             <h2>Maps</h2>
           </div>
         </div>
         <div class="content">
-          <iframe 
-            width="100%" 
-            height="100%" 
-            src="https://maps.google.com/maps?q=2880%20Broadway,%20Amol&t=&z=13&ie=UTF8&iwloc=&output=embed">
-          </iframe>
+          <iframe
+            width="100%"
+            height="100%"
+            title="Google Maps"
+            src="https://maps.google.com/maps?q=2880%20Broadway,%20Amol&t=&z=13&ie=UTF8&iwloc=&output=embed"
+          ></iframe>
         </div>
       </div>
 
@@ -559,9 +527,9 @@
       <div class="window padel3d">
         <div class="window__taskbar">
           <div class="window__taskbar--actions">
-            <button class="close-padel"></button>
-            <button class="backfull-padel"></button>
-            <button class="full-padel"></button>
+            <button class="close-padel" aria-label="Close"></button>
+            <button class="backfull-padel" aria-label="Minimize"></button>
+            <button class="full-padel" aria-label="Maximize"></button>
           </div>
           <div class="window__taskbar--content">
             <h2>Padel 3D</h2>
@@ -571,24 +539,28 @@
           <div class="padel3d__scores">
             <span class="padel3d__player padel3d__p1">P1: <b class="padel3d__score1">0</b></span>
             <span class="padel3d__player padel3d__p2">P2: <b class="padel3d__score2">0</b></span>
+            <button class="padel3d__mode">1 Jugador</button>
           </div>
           <div class="padel3d__canvas"></div>
           <div class="padel3d__msg" style="display:none"></div>
           <button class="padel3d__restart">Reiniciar</button>
+          <p class="padel3d__hint">P1: W/S &nbsp;•&nbsp; P2: ↑/↓ &nbsp;•&nbsp; Click the court to focus</p>
         </div>
       </div>
       <!-- calculator -->
       <div class="calculator">
         <div class="calculator__top">
           <div class="calculator__top--taskabr">
-            <button class="close-cal"></button>
-            <button class="max-cal" disabled></button>
-            <button class="min-cal" disabled></button>
+            <button class="close-cal" aria-label="Close"></button>
+            <button class="max-cal" disabled aria-label="Maximize"></button>
+            <button class="min-cal" disabled aria-label="Minimize"></button>
           </div>
           <input
             class="calculator__top--output display"
             type="text"
             value="0"
+            aria-label="Calculator display"
+            readonly
           />
         </div>
         <div class="input">
@@ -618,9 +590,9 @@
       <div class="blockblast">
         <div class="bb__header">
           <div class="bb__header-actions">
-            <button class="close-blockblast"></button>
-            <button class="min-blockblast" disabled></button>
-            <button class="full-blockblast" disabled></button>
+            <button class="close-blockblast" aria-label="Close"></button>
+            <button class="min-blockblast" disabled aria-label="Minimize"></button>
+            <button class="full-blockblast" disabled aria-label="Maximize"></button>
           </div>
           <span class="bb__title">Block Blast</span>
         </div>
@@ -671,21 +643,24 @@
       </div>
     </section>
     <!-- Widgets panel -->
-  </div>
+
     <div class="spotlight_serach">
-      <svg width="24" height="24">
+      <svg width="24" height="24" aria-hidden="true">
         <path
           d="M10,18c1.846,0,3.543-0.635,4.897-1.688l4.396,4.396l1.414-1.414l-4.396-4.396C17.365,13.543,18,11.846,18,10 c0-4.411-3.589-8-8-8s-8,3.589-8,8S5.589,18,10,18z M10,4c3.309,0,6,2.691,6,6s-2.691,6-6,6s-6-2.691-6-6S6.691,4,10,4z"
         />
       </svg>
-      <input type="search" placeholder="Spotlight Search" />
+      <input type="search" placeholder="Spotlight Search" aria-label="Spotlight Search" />
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <script src="./javascript/blockblast.js"></script>
-    <script src="./javascript/padel3d.js"></script>
-    <script src="./javascript/script.js"></script>
-    <script src="./javascript/app.js"></script>
-    
+    <!-- Three.js (only needed by the Padel 3D game) -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"
+      defer
+    ></script>
+    <script src="./javascript/blockblast.js" defer></script>
+    <script src="./javascript/padel3d.js" defer></script>
+    <script src="./javascript/script.js" defer></script>
+    <script src="./javascript/app.js" defer></script>
   </body>
 </html>

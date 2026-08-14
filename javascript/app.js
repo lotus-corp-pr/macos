@@ -1,12 +1,18 @@
+/********** SERVICE WORKER REGISTRATION **********/
+/*
+ * Registers the offline service worker when supported. Failures are
+ * non-fatal: the desktop still works fully online without it.
+ */
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker
-    .register("sw.js", { scope: "../Mac-OS-Desktop/" })
-    .then(function (reg) {
-      // registration worked
-      console.log("Registration succeeded. Scope is " + reg.scope);
-    })
-    .catch(function (error) {
-      // registration failed
-      console.log("Registration failed with " + error);
-    });
+  window.addEventListener("load", function () {
+    navigator.serviceWorker
+      .register("./sw.js")
+      .then(function (reg) {
+        // Registration succeeded.
+      })
+      .catch(function (error) {
+        // Registration failed; the app keeps working online.
+        if (window.console) console.warn("SW registration failed:", error);
+      });
+  });
 }
