@@ -215,6 +215,8 @@
       launchpad.window.style.display = "block";
       elements.navbar.style.display = "none";
       launchpad.point.style.display = "block";
+      // Hide spotlight so it doesn't overlap the launchpad overlay.
+      elements.spotlight_search.style.display = "none";
     } else {
       launchpad.window.style.display = "none";
       elements.navbar.style.display = "flex";
