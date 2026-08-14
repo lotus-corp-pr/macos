@@ -1,20 +1,30 @@
 {
-  "name": "mac-os-desktop",
-  "version": "1.0.0",
-  "description": "I am planing to make a mac OS simulator using HTML, CSS, and JavaScript 😀",
-  "main": "sw.js",
+  "name": "macos-web-desktop",
+  "version": "2.0.0",
+  "description": "An interactive macOS desktop simulator running in the browser, built with HTML, CSS and vanilla JavaScript.",
+  "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npx --yes serve -l 8080 .",
+    "test": "echo \"No tests specified\" && exit 0"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mhmdmhd6/Mac-OS-Desktop.git"
+    "url": "git+https://github.com/lotus-corp-pr/macos.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "macos",
+    "desktop",
+    "simulator",
+    "web",
+    "pwa",
+    "html",
+    "css",
+    "javascript"
+  ],
+  "author": "lotus-corp-pr",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mhmdmhd6/Mac-OS-Desktop/issues"
+    "url": "https://github.com/lotus-corp-pr/macos/issues"
   },
-  "homepage": "https://github.com/mhmdmhd6/Mac-OS-Desktop#readme"
+  "homepage": "https://github.com/lotus-corp-pr/macos#readme"
 }

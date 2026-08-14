@@ -62,6 +62,7 @@
   let dragState = null;
   let gameOverShown = false;
   let initialized = false;
+  let clearing = false; // guards against input while lines are being cleared
   let dom = null;
 
   function buildDomRefs() {
@@ -144,7 +145,10 @@
     }
 
     renderBoard();
+    updateScore();
+
     if (totalLines > 0) {
+      clearing = true;
       flashClear(fullRows, fullCols);
       setTimeout(() => {
         for (const r of fullRows) {
@@ -154,6 +158,7 @@
           for (let r = 0; r < GRID_SIZE; r++) board[r][c] = null;
         }
         renderBoard();
+        clearing = false;
         afterPlace();
       }, 300);
     } else {
@@ -224,6 +229,7 @@
     board = emptyBoard();
     score = 0;
     gameOverShown = false;
+    clearing = false;
     hideGameOver();
     updateScore();
     renderBoard();
@@ -232,21 +238,41 @@
 
   /* ---------- Rendering ---------- */
 
+  function paintCell(cell, color) {
+    if (color) {
+      cell.style.background = color.main;
+      cell.style.borderBottom = "3px solid " + color.dark;
+      cell.classList.add("bb__cell--filled");
+    } else {
+      cell.style.background = "";
+      cell.style.borderBottom = "";
+      cell.classList.remove("bb__cell--filled");
+    }
+  }
+
   function renderBoard() {
-    dom.boardEl.innerHTML = "";
+    // Re-use cells when possible to keep preview listeners stable.
+    let cells = dom.boardEl.querySelectorAll(".bb__cell");
+    if (cells.length !== GRID_SIZE * GRID_SIZE) {
+      dom.boardEl.innerHTML = "";
+      cells = [];
+      for (let r = 0; r < GRID_SIZE; r++) {
+        for (let c = 0; c < GRID_SIZE; c++) {
+          const cell = document.createElement("div");
+          cell.className = "bb__cell";
+          cell.dataset.row = r;
+          cell.dataset.col = c;
+          dom.boardEl.appendChild(cell);
+          cells.push(cell);
+        }
+      }
+    }
+    let i = 0;
     for (let r = 0; r < GRID_SIZE; r++) {
       for (let c = 0; c < GRID_SIZE; c++) {
-        const cell = document.createElement("div");
-        cell.className = "bb__cell";
-        cell.dataset.row = r;
-        cell.dataset.col = c;
-        const v = board[r][c];
-        if (v) {
-          cell.style.background = v.main;
-          cell.style.borderBottom = "3px solid " + v.dark;
-          cell.classList.add("bb__cell--filled");
-        }
-        dom.boardEl.appendChild(cell);
+        cells[i].classList.remove("bb__cell--clear");
+        paintCell(cells[i], board[r][c]);
+        i++;
       }
     }
   }
@@ -304,7 +330,7 @@
 
   function attachPieceDrag(el, piece) {
     el.addEventListener("pointerdown", function (e) {
-      if (piece.placed) return;
+      if (piece.placed || clearing) return;
       e.preventDefault();
       startDrag(piece, el, e);
     });
@@ -357,12 +383,9 @@
     document.body.appendChild(ghost);
 
     // The ghost's top-left represents the [0,0] offset of the shape.
-    // We anchor it so the shape's first filled cell sits under the pointer,
-    // but offset slightly upward so the finger doesn't cover the piece.
     const filledCells = el.querySelectorAll(".bb__piece-cell--filled");
     const firstCellRect = filledCells[0].getBoundingClientRect();
 
-    // Where within the source first cell did the user grab?
     const grabOffsetX = e.clientX - firstCellRect.left;
     const grabOffsetY = e.clientY - firstCellRect.top;
 
@@ -388,8 +411,6 @@
 
   function moveGhost(x, y) {
     if (!dragState) return;
-    // The ghost's top-left (its shape [0,0]) should be positioned so that
-    // the grabbed cell stays under the pointer, then lifted above the finger.
     const left = x - dragState.grabOffsetX;
     const top = y - dragState.grabOffsetY - dragState.lift;
     dragState.ghost.style.left = left + "px";
@@ -397,10 +418,7 @@
   }
 
   // Returns the board cell [row, col] that the ghost's [0,0] block maps to.
-  // Re-reads the board rect on every call so the target stays correct even
-  // if the window was dragged to a new position since the drag started.
   function computeDropTarget(x, y) {
-    // The ghost's [0,0] top-left position (same formula as moveGhost).
     const ghostLeft = x - dragState.grabOffsetX;
     const ghostTop = y - dragState.grabOffsetY - dragState.lift;
 
@@ -439,13 +457,17 @@
       cell.classList.remove("bb__cell--preview", "bb__cell--preview-bad");
       const r = parseInt(cell.dataset.row, 10);
       const c = parseInt(cell.dataset.col, 10);
-      cell.style.background = board[r][c] ? board[r][c].main : "";
+      // Reset background from preview to the underlying board state.
+      if (board[r][c]) {
+        cell.style.background = board[r][c].main;
+      } else {
+        cell.style.background = "";
+      }
     });
   }
 
   function onPointerMove(e) {
     if (!dragState) return;
-    // preventDefault stops touch scrolling while dragging.
     e.preventDefault();
     moveGhost(e.clientX, e.clientY);
 
