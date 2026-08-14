@@ -83,6 +83,9 @@
         <li class="leftLi app_name" id="blockblast">
           <p>Block Blast</p>
         </li>
+        <li class="leftLi app_name" id="games">
+          <p>Games</p>
+        </li>
         <li class="leftLi app_name" id="padel">
           <p>Padel 3D</p>
         </li>
@@ -369,6 +372,10 @@
         <img src="./icon/dock/padel.svg" alt="Padel Logo" />
         <hr class="point hidden" id="point-padel" />
       </button>
+      <button class="icon open-games" title="Games">
+        <img src="./icon/dock/games.png" alt="Games Logo" />
+        <hr class="point hidden" id="point-games" />
+      </button>
       <hr class="column hidden" />
       <button class="icon" title="Trash">
         <img
@@ -419,6 +426,13 @@
         >
           <img src="./icon/dock/padel.svg" alt="" />
           <strong>Padel 3D</strong>
+        </div>
+        <div
+          class="child-launchpad open-games-lunching"
+          data-keywords="Games,MonkeyGG2,Portal,Arcade,Unblocked,Flash"
+        >
+          <img src="./icon/dock/games.png" alt="" />
+          <strong>Games</strong>
         </div>
       </div>
     </div>
@@ -545,6 +559,28 @@
           <div class="padel3d__msg" style="display:none"></div>
           <button class="padel3d__restart">Reiniciar</button>
           <p class="padel3d__hint">P1: W/S &nbsp;•&nbsp; P2: ↑/↓ &nbsp;•&nbsp; Click the court to focus</p>
+        </div>
+      </div>
+
+      <!-- Games portal (MonkeyGG2) -->
+      <div class="window games">
+        <div class="window__taskbar">
+          <div class="window__taskbar--actions">
+            <button class="close-games" aria-label="Close"></button>
+            <button class="backfull-games" aria-label="Minimize"></button>
+            <button class="full-games" aria-label="Maximize"></button>
+          </div>
+          <div class="window__taskbar--content">
+            <h2>Games</h2>
+          </div>
+        </div>
+        <div class="content">
+          <iframe
+            width="100%"
+            height="100%"
+            title="Games Portal"
+            src="./monkeygg2/index.html"
+          ></iframe>
         </div>
       </div>
       <!-- calculator -->

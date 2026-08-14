@@ -1,2 +1,5 @@
-.vscode
-.DS_Store
+# macOS web desktop
+node_modules/
+
+# MonkeyGG2 games portal - large vendored content
+# (kept in-tree intentionally; see monkeygg2/README.md)
