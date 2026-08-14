@@ -339,7 +339,7 @@
     blockblastApp.window.style.display = "flex";
     safeInitBlockBlast();
   });
-  blockblastApp.opening_l.addEventListener("click", handleOpenBlockBast_lunchpad);
+  blockblastApp.opening_l.addEventListener("click", handleOpenBlockBlast_lunchpad);
   blockblastApp.close.addEventListener("click", () =>
     close_window(blockblastApp.window, blockblastApp.point, blockblastApp.app_name)
   );
