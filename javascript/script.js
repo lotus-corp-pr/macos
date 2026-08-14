@@ -100,6 +100,18 @@
     opening_l: document.querySelector(".open-padel-lunching"),
   };
 
+  // Games App (MonkeyGG2 portal)
+  const gamesApp = {
+    app_name: document.querySelector("#games"),
+    window: document.querySelector(".games"),
+    full: document.querySelector(".full-games"),
+    close: document.querySelector(".close-games"),
+    backfull: document.querySelector(".backfull-games"),
+    point: document.querySelector("#point-games"),
+    opening: document.querySelector(".open-games"),
+    opening_l: document.querySelector(".open-games-lunching"),
+  };
+
   // Launchpad
   const launchpad = {
     container: document.querySelector(".container__Window"),
@@ -361,6 +373,23 @@
     handleMinimize(padelApp.window)
   );
 
+  // Games app listeners
+  gamesApp.opening.addEventListener("click", () =>
+    open_window(gamesApp.window, gamesApp.point, gamesApp.app_name)
+  );
+  gamesApp.opening_l.addEventListener("click", () =>
+    openFromLaunchpad(gamesApp.window, gamesApp.point, gamesApp.app_name)
+  );
+  gamesApp.close.addEventListener("click", () =>
+    close_window(gamesApp.window, gamesApp.point, gamesApp.app_name)
+  );
+  gamesApp.full.addEventListener("click", () =>
+    handleFullScreen(gamesApp.window)
+  );
+  gamesApp.backfull.addEventListener("click", () =>
+    handleMinimize(gamesApp.window)
+  );
+
   elements.open_spotlight.addEventListener("click", handleSpotlight);
   launchpad.searchbox.addEventListener("input", handleLaunchpadSearch);
   elements.clockWrapper.addEventListener("click", () => {
@@ -529,6 +558,7 @@
   makeDraggable(document.querySelector(".note"), document.querySelector(".note .window__taskbar"));
   makeDraggable(document.querySelector(".maps"), document.querySelector(".maps .window__taskbar"));
   makeDraggable(document.querySelector(".padel3d"), document.querySelector(".padel3d .window__taskbar"));
+  makeDraggable(document.querySelector(".games"), document.querySelector(".games .window__taskbar"));
   makeDraggable(document.querySelector(".spotlight_serach"));
   // Calculator and Block Blast have their own header/handle.
   const calcTop = document.querySelector(".calculator__top");
