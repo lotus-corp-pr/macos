@@ -40,6 +40,14 @@
   </head>
 
   <body>
+    <script>
+  const password = "3366"; // Cambia esto por tu contraseña
+  const userPassword = prompt("Ingresa la contraseña para acceder al simulador:");
+  if (userPassword !== password) {
+    alert("Contraseña incorrecta. Acceso denegado.");
+    window.location.href = "about:blank"; // Redirige a una página vacía
+  }
+</script>
     <div class="navbar">
       <ul>
         <li class="leftLi logo">
