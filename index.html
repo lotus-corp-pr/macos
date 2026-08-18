@@ -41,15 +41,18 @@
 
   <body>
     <script>
-  // Obtener la fecha actual en formato DD-MM-YYYY
-  const today = new Date();
-  const day = String(today.getDate()).padStart(2, '0');
-  const month = String(today.getMonth() + 1).padStart(2, '0');
-  const year = today.getFullYear();
-  const dateStr = `${day}-${month}-${year}`;
+  // Lista de contraseñas en orden
+  const passwords = ["100910", "336699", "oak", "lotusgames", "1234", "pr", "gl"];
 
-  // Generar la contraseña esperada (ej: "macOS-18-08-2026")
-  const expectedPassword = `macOS-${dateStr}`;
+  // Obtener el día actual para calcular el índice
+  const today = new Date();
+  const startDate = new Date("2026-08-18"); // Fecha de inicio (hoy)
+  const diffTime = Math.abs(today - startDate);
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+  // Calcular el índice de la contraseña (se repite cada 7 días)
+  const passwordIndex = diffDays % passwords.length;
+  const expectedPassword = passwords[passwordIndex];
 
   // Pedir la contraseña al usuario
   const userPassword = prompt("Ingresa la contraseña del día para acceder al simulador:");
