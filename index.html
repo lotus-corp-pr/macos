@@ -41,9 +41,21 @@
 
   <body>
     <script>
-  const password = "oak"; // Cambia esto por tu contraseña
-  const userPassword = prompt("Ingresa la contraseña para acceder al classroom:");
-  if (userPassword !== password) {
+  // Obtener la fecha actual en formato DD-MM-YYYY
+  const today = new Date();
+  const day = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const year = today.getFullYear();
+  const dateStr = `${day}-${month}-${year}`;
+
+  // Generar la contraseña esperada (ej: "macOS-18-08-2026")
+  const expectedPassword = `macOS-${dateStr}`;
+
+  // Pedir la contraseña al usuario
+  const userPassword = prompt("Ingresa la contraseña del día para acceder al simulador:");
+
+  // Validar la contraseña
+  if (userPassword !== expectedPassword) {
     alert("Contraseña incorrecta. Acceso denegado.");
     window.location.href = "about:blank"; // Redirige a una página vacía
   }
